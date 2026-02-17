@@ -1,0 +1,169 @@
+{
+  "design_system": {
+    "typography": {
+      "font_family": {
+        "heading": "Anton, sans-serif",
+        "body": "Manrope, sans-serif",
+        "accent": "Bebas Neue, sans-serif"
+      },
+      "scale": {
+        "h1": "text-6xl md:text-8xl font-black tracking-tighter uppercase",
+        "h2": "text-4xl md:text-6xl font-bold tracking-tight uppercase",
+        "h3": "text-2xl md:text-3xl font-bold tracking-wide",
+        "body": "text-base md:text-lg leading-relaxed text-gray-300",
+        "caption": "text-sm tracking-widest uppercase text-gold-500"
+      }
+    },
+    "colors": {
+      "palette": {
+        "background": {
+          "default": "#050505",
+          "paper": "#0A0A0A",
+          "subtle": "#121212"
+        },
+        "primary": {
+          "main": "#D4AF37",
+          "light": "#F4C430",
+          "dark": "#AA8C2C",
+          "contrast": "#000000"
+        },
+        "secondary": {
+          "main": "#1A1A1A",
+          "light": "#2A2A2A",
+          "dark": "#000000"
+        },
+        "text": {
+          "primary": "#EDEDED",
+          "secondary": "#A1A1A1",
+          "muted": "#525252"
+        },
+        "accent": {
+          "gold": "#FFD700",
+          "honey": "#E5C100"
+        }
+      },
+      "gradients": {
+        "gold_rush": "linear-gradient(135deg, #D4AF37 0%, #AA8C2C 100%)",
+        "dark_void": "linear-gradient(to bottom, #050505, #121212)",
+        "honey_glow": "radial-gradient(circle at center, rgba(212, 175, 55, 0.15) 0%, rgba(5, 5, 5, 0) 70%)"
+      }
+    },
+    "spacing": {
+      "container": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
+      "section_padding": "py-20 md:py-32",
+      "element_gap": "gap-8 md:gap-12"
+    },
+    "visual_enhancers": {
+      "borders": {
+        "gold_thin": "1px solid rgba(212, 175, 55, 0.3)",
+        "gold_glow": "0 0 15px rgba(212, 175, 55, 0.2)"
+      },
+      "shadows": {
+        "neon_gold": "0 0 20px rgba(212, 175, 55, 0.15)",
+        "deep_black": "0 20px 40px rgba(0, 0, 0, 0.8)"
+      },
+      "textures": {
+        "noise": "url('/assets/noise.png')",
+        "hex_pattern": "repeating-linear-gradient(60deg, #111 0, #111 1px, transparent 1px, transparent 5px)"
+      },
+      "radius": {
+        "default": "0px",
+        "button": "0px",
+        "card": "0px"
+      }
+    },
+    "animation": {
+      "hover": "transition-all duration-300 ease-out hover:translate-y-[-4px] hover:shadow-[0_0_20px_rgba(212,175,55,0.3)]",
+      "fade_in": "animate-in fade-in duration-700 slide-in-from-bottom-4",
+      "pulse_gold": "animate-pulse text-gold-500"
+    }
+  },
+  "components": {
+    "Button": {
+      "variants": {
+        "primary": "bg-gold-500 text-black font-bold uppercase tracking-widest hover:bg-gold-400 rounded-none px-8 py-4 border border-gold-500",
+        "outline": "bg-transparent text-gold-500 border border-gold-500 font-bold uppercase tracking-widest hover:bg-gold-500/10 rounded-none px-8 py-4",
+        "ghost": "text-gray-300 hover:text-gold-500 uppercase tracking-widest font-semibold"
+      }
+    },
+    "Card": {
+      "base": "bg-secondary-main border border-white/5 p-8 hover:border-gold-500/50 transition-colors duration-300 relative overflow-hidden group",
+      "pricing": "flex flex-col h-full bg-secondary-main border border-gold-500/20 hover:border-gold-500 hover:shadow-neon_gold transition-all duration-300"
+    },
+    "Input": {
+      "base": "bg-secondary-light border-white/10 text-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500 rounded-none h-12"
+    },
+    "Hexagon": {
+      "wrapper": "relative w-full aspect-square clip-path-hexagon bg-secondary-light flex items-center justify-center hover:bg-gold-500 transition-colors duration-300 group cursor-pointer",
+      "content": "text-center p-4 group-hover:text-black transition-colors duration-300"
+    }
+  },
+  "layout_strategies": {
+    "hero": {
+      "type": "immersive_video_or_image",
+      "overlay": "bg-black/70",
+      "content_alignment": "center",
+      "typography": "massive_impact"
+    },
+    "services": {
+      "type": "honeycomb_grid",
+      "description": "Use a CSS grid or flex layout with clip-path polygons to create a honeycomb effect for service items."
+    },
+    "pricing": {
+      "type": "comparison_cards",
+      "highlight": "gold_border_for_popular"
+    },
+    "gallery": {
+      "type": "masonry_grid",
+      "gap": "gap-4"
+    }
+  },
+  "assets": {
+    "images": {
+      "hero_bg": {
+        "url": "https://images.unsplash.com/photo-1573283807132-f7b218208690?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1OTV8MHwxfHNlYXJjaHwxfHxhdWRpbyUyMG1peGluZyUyMGNvbnNvbGUlMjBkYXJrfGVufDB8fHx8MTc3MTMzNzcwNnww&ixlib=rb-4.1.0&q=85",
+        "alt": "Dark audio mixing console with illuminated buttons"
+      },
+      "studio_mic": {
+        "url": "https://images.unsplash.com/photo-1552174588-6733961c358e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzN8MHwxfHNlYXJjaHwxfHxyZWNvcmRpbmclMjBzdHVkaW8lMjBtaWNyb3Bob25lJTIwZGFyayUyMGxpZ2h0aW5nfGVufDB8fHx8MTc3MTMzNzY4N3ww&ixlib=rb-4.1.0&q=85",
+        "alt": "Professional condenser microphone in dark studio lighting"
+      },
+      "studio_interior": {
+        "url": "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/lvdly506_IMG_0757.jpeg",
+        "alt": "Heavy Hive Studio Interior with Blue LED lighting"
+      },
+      "logo": {
+        "url": "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/3i1goqnu_IMG_0756.jpeg",
+        "alt": "Heavy Hive Studios Logo"
+      },
+      "services_list": {
+        "url": "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/5niwa6q1_IMG_0755.jpeg",
+        "alt": "Services List Honeycomb Design"
+      }
+    },
+    "icons": {
+      "library": "lucide-react",
+      "style": "stroke-1 text-gold-500"
+    }
+  },
+  "instructions_to_main_agent": [
+    "1. SETUP: Install 'lucide-react' and 'framer-motion' immediately.",
+    "2. FONTS: Add 'Anton' and 'Manrope' from Google Fonts in index.html or via import in index.css.",
+    "3. TAILWIND: Extend the tailwind.config.js with the custom colors (gold, obsidian) and font families defined above.",
+    "4. GLOBAL CSS: Set body background to #050505 and text to #EDEDED. Remove any default white backgrounds.",
+    "5. HERO SECTION: Create a full-screen hero with the 'hero_bg' image, a heavy black overlay (opacity 70%), and the main tagline centered. Use the 'Anton' font for the 'HEAVY HIVE' title.",
+    "6. SERVICES SECTION: Implement a responsive grid. Try to achieve a honeycomb look using CSS clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%). If too complex, use a strict grid with hexagonal borders.",
+    "7. PRICING: Create 3 cards. Use the 'gold_thin' border style. Highlight the 'Best Value' option with a filled gold header.",
+    "8. GALLERY: Use a masonry layout or a simple grid for the studio photos. Add a hover effect that zooms the image slightly.",
+    "9. CONTACT: Simple form with dark inputs (bg-secondary-light). Add social links (Instagram, Email) with large icons.",
+    "10. BOOKING: The 'Book Now' button must be prominent (Gold background, Black text) and link to Peerspace (use a placeholder link if actual URL is missing, but prompt implies direct booking goal - for now, link to contact or external booking).",
+    "11. ACCESSIBILITY: Ensure gold text on black has sufficient contrast. Use lighter gold (#F4C430) for text if needed."
+  ],
+  "universal_guidelines": [
+    "Do not use gradients for text unless it is a very large heading.",
+    "Avoid 'Inter' font for headings. Use 'Anton' or 'Bebas Neue'.",
+    "Use 2x more padding than usual. Let the dark background breathe.",
+    "All interactive elements must have a hover state (color change or lift).",
+    "Use 'data-testid' for all interactive elements."
+  ]
+}
