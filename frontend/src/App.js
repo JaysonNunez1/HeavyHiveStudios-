@@ -72,54 +72,115 @@ const beatPricing = [
 
 // Navigation Component
 const Navigation = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
   const scrollToSection = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    setMobileMenuOpen(false);
   };
 
+  const navItems = ['Services', 'Pricing', 'Gallery', 'Contact'];
+
   return (
-    <motion.nav 
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-obsidian/90 backdrop-blur-md border-b border-gold-500/10"
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <div className="flex items-center gap-2">
-            <div className="text-gold-500 font-heading text-2xl tracking-wider">
-              HEAVY<span className="text-white">HIVE</span>
+    <>
+      <motion.nav 
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        className="fixed top-0 left-0 right-0 z-50 bg-obsidian/90 backdrop-blur-md border-b border-gold-500/10"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <div className="flex items-center gap-2">
+              <div className="text-gold-500 font-heading text-2xl tracking-wider">
+                HEAVY<span className="text-white">HIVE</span>
+              </div>
             </div>
-          </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
-            {['Services', 'Pricing', 'Gallery', 'Contact'].map((item) => (
-              <button
-                key={item}
-                onClick={() => scrollToSection(item.toLowerCase())}
-                className="text-gray-300 hover:text-gold-500 font-medium tracking-wide transition-colors animated-underline"
-                data-testid={`nav-${item.toLowerCase()}`}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-8">
+              {navItems.map((item) => (
+                <button
+                  key={item}
+                  onClick={() => scrollToSection(item.toLowerCase())}
+                  className="text-gray-300 hover:text-gold-500 font-medium tracking-wide transition-colors animated-underline"
+                  data-testid={`nav-${item.toLowerCase()}`}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
 
-          {/* CTA Button */}
-          <a 
-            href="https://www.peerspace.com" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            data-testid="nav-book-btn"
-          >
-            <Button className="bg-gold-500 text-black font-bold uppercase tracking-widest hover:bg-gold-400 px-6 py-2 btn-glow">
-              Book Now
-            </Button>
-          </a>
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 text-gold-500 hover:text-gold-400 transition-colors"
+              data-testid="mobile-menu-toggle"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+
+            {/* CTA Button - Desktop */}
+            <a 
+              href="https://www.peerspace.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              data-testid="nav-book-btn"
+              className="hidden md:block"
+            >
+              <Button className="bg-gold-500 text-black font-bold uppercase tracking-widest hover:bg-gold-400 px-6 py-2 btn-glow">
+                Book Now
+              </Button>
+            </a>
+          </div>
         </div>
-      </div>
-    </motion.nav>
+      </motion.nav>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-40 bg-obsidian/98 pt-24 px-6 md:hidden"
+          >
+            <div className="flex flex-col items-center gap-8">
+              {navItems.map((item, index) => (
+                <motion.button
+                  key={item}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  onClick={() => scrollToSection(item.toLowerCase())}
+                  className="text-white hover:text-gold-500 font-heading text-3xl tracking-wide transition-colors"
+                  data-testid={`mobile-nav-${item.toLowerCase()}`}
+                >
+                  {item}
+                </motion.button>
+              ))}
+              <motion.a
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                href="https://www.peerspace.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4"
+                data-testid="mobile-book-btn"
+              >
+                <Button className="bg-gold-500 text-black font-bold uppercase tracking-widest hover:bg-gold-400 px-10 py-4 text-lg btn-glow">
+                  Book Now
+                </Button>
+              </motion.a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
