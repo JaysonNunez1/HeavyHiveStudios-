@@ -525,22 +525,45 @@ const GallerySection = () => {
           whileInView="visible"
           viewport={{ once: true }}
           variants={staggerContainer}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
         >
-          {galleryImages.map((image, index) => (
-            <motion.div
-              key={index}
-              variants={fadeInUp}
-              className={`gallery-image ${index === 0 ? 'md:col-span-2 md:row-span-2' : ''}`}
-              data-testid={`gallery-image-${index}`}
-            >
-              <img 
-                src={image.src} 
-                alt={image.alt}
-                className={`w-full object-cover ${index === 0 ? 'h-[500px]' : 'h-[240px]'}`}
-              />
-            </motion.div>
-          ))}
+          {/* Main large image */}
+          <motion.div
+            variants={fadeInUp}
+            className="gallery-image md:col-span-2"
+            data-testid="gallery-image-0"
+          >
+            <img 
+              src={ASSETS.studio_interior} 
+              alt="Heavy Hive Studio Interior"
+              className="w-full h-[300px] md:h-[450px] object-cover"
+            />
+          </motion.div>
+          
+          {/* Two side by side images */}
+          <motion.div
+            variants={fadeInUp}
+            className="gallery-image"
+            data-testid="gallery-image-1"
+          >
+            <img 
+              src={ASSETS.studio_lounge} 
+              alt="Studio Lounge Area"
+              className="w-full h-[250px] md:h-[300px] object-cover"
+            />
+          </motion.div>
+          
+          <motion.div
+            variants={fadeInUp}
+            className="gallery-image"
+            data-testid="gallery-image-2"
+          >
+            <img 
+              src={ASSETS.studio_desk} 
+              alt="Production Desk Setup"
+              className="w-full h-[250px] md:h-[300px] object-cover"
+            />
+          </motion.div>
         </motion.div>
 
         {/* Studio Features */}
