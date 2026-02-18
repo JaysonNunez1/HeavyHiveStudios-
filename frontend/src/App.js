@@ -499,10 +499,9 @@ const GallerySection = () => {
     { src: ASSETS.studio_desk, alt: "Production Desk Setup" },
   ];
 
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "center" });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" });
   
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [isInView, setIsInView] = useState(false);
 
   const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
@@ -519,20 +518,16 @@ const GallerySection = () => {
     return () => emblaApi.off("select", onSelect);
   }, [emblaApi, onSelect]);
 
-  // Custom autoplay - starts when section comes into view
+  // Autoplay effect - always running with 4 second interval
   useEffect(() => {
-    if (!isInView || !emblaApi) return;
+    if (!emblaApi) return;
     
     const autoplayInterval = setInterval(() => {
-      if (emblaApi.canScrollNext()) {
-        emblaApi.scrollNext();
-      } else {
-        emblaApi.scrollTo(0);
-      }
+      emblaApi.scrollNext();
     }, 4000);
 
     return () => clearInterval(autoplayInterval);
-  }, [isInView, emblaApi]);
+  }, [emblaApi]);
 
   return (
     <section id="gallery" className="py-24 md:py-32 bg-obsidian relative">
