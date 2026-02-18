@@ -24,7 +24,8 @@ import { Button } from "./components/ui/button";
 const ASSETS = {
   hero_bg: "https://images.unsplash.com/photo-1573283807132-f7b218208690?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1OTV8MHwxfHNlYXJjaHwxfHxhdWRpbyUyMG1peGluZyUyMGNvbnNvbGUlMjBkYXJrfGVufDB8fHx8MTc3MTMzNzcwNnww&ixlib=rb-4.1.0&q=85",
   studio_interior: "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/lvdly506_IMG_0757.jpeg",
-  studio_mic: "https://images.unsplash.com/photo-1552174588-6733961c358e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzN8MHwxfHNlYXJjaHwxfHxyZWNvcmRpbmclMjBzdHVkaW8lMjBtaWNyb3Bob25lJTIwZGFyayUyMGxpZ2h0aW5nfGVufDB8fHx8MTc3MTMzNzY4N3ww&ixlib=rb-4.1.0&q=85",
+  studio_lounge: "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/vad2mitu_IMG_0762.jpeg",
+  studio_desk: "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/ydg1vfs3_IMG_0761.jpeg",
 };
 
 // Animation variants
