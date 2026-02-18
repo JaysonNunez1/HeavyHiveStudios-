@@ -500,10 +500,7 @@ const GallerySection = () => {
     { src: ASSETS.studio_desk, alt: "Production Desk Setup" },
   ];
 
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, align: "center" },
-    [Autoplay({ delay: 4000, stopOnInteraction: false, stopOnMouseEnter: true })]
-  );
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "center" });
   
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isInView, setIsInView] = useState(false);
@@ -523,12 +520,19 @@ const GallerySection = () => {
     return () => emblaApi.off("select", onSelect);
   }, [emblaApi, onSelect]);
 
-  // Start autoplay when section comes into view
+  // Custom autoplay - starts when section comes into view
   useEffect(() => {
-    if (isInView && emblaApi) {
-      const autoplay = emblaApi.plugins().autoplay;
-      if (autoplay) autoplay.play();
-    }
+    if (!isInView || !emblaApi) return;
+    
+    const autoplayInterval = setInterval(() => {
+      if (emblaApi.canScrollNext()) {
+        emblaApi.scrollNext();
+      } else {
+        emblaApi.scrollTo(0);
+      }
+    }, 4000);
+
+    return () => clearInterval(autoplayInterval);
   }, [isInView, emblaApi]);
 
   return (
