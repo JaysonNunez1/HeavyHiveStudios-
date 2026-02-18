@@ -491,9 +491,9 @@ const PricingSection = () => {
 // Gallery Section
 const GallerySection = () => {
   const galleryImages = [
-    { src: ASSETS.studio_interior, alt: "Heavy Hive Studio Interior" },
-    { src: ASSETS.studio_mic, alt: "Professional Recording Setup" },
-    { src: ASSETS.hero_bg, alt: "Audio Mixing Console" },
+    { src: ASSETS.studio_interior, alt: "Heavy Hive Studio Interior", featured: true },
+    { src: ASSETS.studio_lounge, alt: "Studio Lounge Area" },
+    { src: ASSETS.studio_desk, alt: "Production Desk Setup" },
   ];
 
   return (
