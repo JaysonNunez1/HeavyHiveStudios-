@@ -495,10 +495,41 @@ const PricingSection = () => {
 // Gallery Section
 const GallerySection = () => {
   const galleryImages = [
-    { src: ASSETS.studio_interior, alt: "Heavy Hive Studio Interior", featured: true },
+    { src: ASSETS.studio_interior, alt: "Heavy Hive Studio Interior" },
     { src: ASSETS.studio_lounge, alt: "Studio Lounge Area" },
     { src: ASSETS.studio_desk, alt: "Production Desk Setup" },
   ];
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: true, align: "center" },
+    [Autoplay({ delay: 4000, stopOnInteraction: false, stopOnMouseEnter: true })]
+  );
+  
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isInView, setIsInView] = useState(false);
+
+  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    return () => emblaApi.off("select", onSelect);
+  }, [emblaApi, onSelect]);
+
+  // Start autoplay when section comes into view
+  useEffect(() => {
+    if (isInView && emblaApi) {
+      const autoplay = emblaApi.plugins().autoplay;
+      if (autoplay) autoplay.play();
+    }
+  }, [isInView, emblaApi]);
 
   return (
     <section id="gallery" className="py-24 md:py-32 bg-obsidian relative">
@@ -510,6 +541,7 @@ const GallerySection = () => {
           viewport={{ once: true }}
           variants={staggerContainer}
           className="text-center mb-16"
+          onViewportEnter={() => setIsInView(true)}
         >
           <motion.p variants={fadeInUp} className="text-gold-500 font-accent tracking-[0.3em] text-sm mb-4">
             TAKE A LOOK INSIDE
@@ -523,51 +555,73 @@ const GallerySection = () => {
           </motion.h2>
         </motion.div>
 
-        {/* Gallery Grid */}
+        {/* Gallery Carousel */}
         <motion.div 
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          variants={staggerContainer}
-          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          variants={fadeInUp}
+          className="relative"
         >
-          {/* Main large image */}
-          <motion.div
-            variants={fadeInUp}
-            className="gallery-image md:col-span-2"
-            data-testid="gallery-image-0"
+          {/* Carousel Container */}
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex">
+              {galleryImages.map((image, index) => (
+                <div
+                  key={index}
+                  className="flex-[0_0_100%] min-w-0 px-2"
+                  data-testid={`gallery-slide-${index}`}
+                >
+                  <div className="relative overflow-hidden border border-gold-500/20">
+                    <img 
+                      src={image.src} 
+                      alt={image.alt}
+                      className="w-full h-[350px] md:h-[500px] lg:h-[600px] object-cover"
+                    />
+                    {/* Image overlay with caption */}
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                      <p className="text-white font-heading text-xl md:text-2xl">{image.alt}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation Arrows */}
+          <button
+            onClick={scrollPrev}
+            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 hover:bg-gold-500 text-white hover:text-black transition-all border border-gold-500/30 hover:border-gold-500"
+            data-testid="carousel-prev"
+            aria-label="Previous slide"
           >
-            <img 
-              src={ASSETS.studio_interior} 
-              alt="Heavy Hive Studio Interior"
-              className="w-full h-[300px] md:h-[450px] object-cover"
-            />
-          </motion.div>
-          
-          {/* Two side by side images */}
-          <motion.div
-            variants={fadeInUp}
-            className="gallery-image"
-            data-testid="gallery-image-1"
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+          <button
+            onClick={scrollNext}
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 hover:bg-gold-500 text-white hover:text-black transition-all border border-gold-500/30 hover:border-gold-500"
+            data-testid="carousel-next"
+            aria-label="Next slide"
           >
-            <img 
-              src={ASSETS.studio_lounge} 
-              alt="Studio Lounge Area"
-              className="w-full h-[250px] md:h-[300px] object-cover"
-            />
-          </motion.div>
-          
-          <motion.div
-            variants={fadeInUp}
-            className="gallery-image"
-            data-testid="gallery-image-2"
-          >
-            <img 
-              src={ASSETS.studio_desk} 
-              alt="Production Desk Setup"
-              className="w-full h-[250px] md:h-[300px] object-cover"
-            />
-          </motion.div>
+            <ChevronRight className="w-6 h-6" />
+          </button>
+
+          {/* Dots Indicator */}
+          <div className="flex justify-center gap-3 mt-6">
+            {galleryImages.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => emblaApi && emblaApi.scrollTo(index)}
+                className={`w-3 h-3 transition-all ${
+                  index === selectedIndex 
+                    ? 'bg-gold-500 scale-125' 
+                    : 'bg-white/30 hover:bg-white/50'
+                }`}
+                data-testid={`carousel-dot-${index}`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
         </motion.div>
 
         {/* Studio Features */}
