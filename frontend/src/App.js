@@ -495,6 +495,179 @@ const PricingSection = () => {
   );
 };
 
+// Subscription Section
+const SubscriptionSection = () => {
+  const subscriptions = [
+    {
+      icon: Clock,
+      title: "Studio Time",
+      price: "$150",
+      period: "/month",
+      features: [
+        "3 recording sessions per month",
+        "4 hours per session",
+        "Engineer included",
+        "Priority booking"
+      ],
+      featured: false
+    },
+    {
+      icon: Sparkles,
+      title: "Weekly Beats",
+      price: "$150",
+      period: "/month",
+      features: [
+        "2 exclusive beats per week",
+        "Custom to your style",
+        "In-house producers",
+        "Full ownership rights"
+      ],
+      featured: true
+    },
+    {
+      icon: Headphones,
+      title: "Mix & Master",
+      price: "Custom",
+      period: "",
+      features: [
+        "Personalized subscription",
+        "Volume discounts available",
+        "Priority turnaround",
+        "Contact us for details"
+      ],
+      featured: false,
+      contactUs: true
+    }
+  ];
+
+  return (
+    <section id="subscriptions" className="py-24 md:py-32 bg-obsidian relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+          className="text-center mb-16"
+        >
+          <motion.p variants={fadeInUp} className="text-gold-500 font-accent tracking-[0.3em] text-sm mb-4">
+            SAVE MORE WITH
+          </motion.p>
+          <motion.h2 
+            variants={fadeInUp}
+            className="font-heading text-4xl md:text-6xl text-white"
+            data-testid="subscriptions-title"
+          >
+            <span className="text-gold-500">SUBSCRIPTION</span> PLANS
+          </motion.h2>
+          <motion.p variants={fadeInUp} className="text-gray-400 mt-4 max-w-xl mx-auto">
+            Unlock exclusive monthly plans and take your music to the next level.
+          </motion.p>
+        </motion.div>
+
+        {/* Subscription Cards */}
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+        >
+          {subscriptions.map((sub, index) => (
+            <motion.div
+              key={index}
+              variants={fadeInUp}
+              className={`relative p-8 border transition-all duration-300 hover:border-gold-500 ${
+                sub.featured 
+                  ? 'bg-gold-500/5 border-gold-500' 
+                  : 'bg-obsidian-100 border-gold-500/20'
+              }`}
+              data-testid={`subscription-${sub.title.toLowerCase().replace(/\s+/g, '-')}`}
+            >
+              {/* Featured Badge */}
+              {sub.featured && (
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <span className="bg-gold-500 text-black font-bold text-xs tracking-widest px-4 py-1 uppercase">
+                    Best Value
+                  </span>
+                </div>
+              )}
+
+              {/* Icon */}
+              <div className="flex justify-center mb-6">
+                <div className={`p-4 ${sub.featured ? 'bg-gold-500' : 'bg-gold-500/10'}`}>
+                  <sub.icon className={`w-8 h-8 ${sub.featured ? 'text-black' : 'text-gold-500'}`} />
+                </div>
+              </div>
+
+              {/* Title */}
+              <h3 className="font-heading text-2xl text-center text-white mb-4">{sub.title}</h3>
+
+              {/* Price */}
+              <div className="text-center mb-6">
+                <span className="font-heading text-4xl text-gold-500">{sub.price}</span>
+                <span className="text-gray-400 text-lg">{sub.period}</span>
+              </div>
+
+              {/* Features */}
+              <ul className="space-y-3 mb-8">
+                {sub.features.map((feature, idx) => (
+                  <li key={idx} className="flex items-center gap-3 text-gray-300">
+                    <Repeat className="w-4 h-4 text-gold-500 flex-shrink-0" />
+                    <span className="text-sm">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* CTA Button */}
+              {sub.contactUs ? (
+                <a href="mailto:heavyhivestudios@gmail.com" className="block">
+                  <Button 
+                    className="w-full border border-gold-500 text-gold-500 hover:bg-gold-500 hover:text-black uppercase tracking-widest py-4 bg-transparent"
+                    data-testid={`subscription-contact-${index}`}
+                  >
+                    <MessageCircle className="w-4 h-4 mr-2" />
+                    Contact Us
+                  </Button>
+                </a>
+              ) : (
+                <a href="mailto:heavyhivestudios@gmail.com?subject=Subscription Inquiry - ${sub.title}" className="block">
+                  <Button 
+                    className={`w-full uppercase tracking-widest py-4 ${
+                      sub.featured 
+                        ? 'bg-gold-500 text-black hover:bg-gold-400' 
+                        : 'border border-gold-500 text-gold-500 hover:bg-gold-500 hover:text-black bg-transparent'
+                    }`}
+                    data-testid={`subscription-cta-${index}`}
+                  >
+                    Subscribe Now
+                  </Button>
+                </a>
+              )}
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Bottom Note */}
+        <motion.p 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeInUp}
+          className="text-center text-gray-500 text-sm mt-12"
+        >
+          All subscriptions are billed monthly. Cancel anytime. Contact us for custom packages.
+        </motion.p>
+      </div>
+
+      {/* Decorative elements */}
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-500/30 to-transparent" />
+      <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-500/30 to-transparent" />
+    </section>
+  );
+};
+
 // Gallery Section
 const GallerySection = () => {
   const galleryImages = [
