@@ -87,7 +87,7 @@ const Navigation = () => {
     setMobileMenuOpen(false);
   };
 
-  const navItems = ['Services', 'Pricing', 'Gallery', 'Contact'];
+  const navItems = ['Services', 'Pricing', 'Subscriptions', 'Gallery', 'Contact'];
 
   return (
     <>
