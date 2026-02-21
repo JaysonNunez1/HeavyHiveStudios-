@@ -539,7 +539,6 @@ const GallerySection = () => {
           viewport={{ once: true }}
           variants={staggerContainer}
           className="text-center mb-16"
-          onViewportEnter={() => setIsInView(true)}
         >
           <motion.p variants={fadeInUp} className="text-gold-500 font-accent tracking-[0.3em] text-sm mb-4">
             TAKE A LOOK INSIDE
