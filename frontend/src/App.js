@@ -19,7 +19,11 @@ import {
   Menu,
   X,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Repeat,
+  Clock,
+  Sparkles,
+  MessageCircle
 } from "lucide-react";
 import { Button } from "./components/ui/button";
 
