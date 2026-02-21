@@ -975,6 +975,7 @@ const Home = () => {
       <HeroSection />
       <ServicesSection />
       <PricingSection />
+      <SubscriptionSection />
       <GallerySection />
       <ContactSection />
       <Footer />
