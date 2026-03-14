@@ -385,8 +385,8 @@ const PricingSection = () => {
           </motion.p>
         </motion.div>
 
-        {/* Pricing Cards Container */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Pricing Cards Container - Top Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           
           {/* Recording Rates */}
           <motion.div 
@@ -399,7 +399,7 @@ const PricingSection = () => {
           >
             <div className="flex items-center gap-3 mb-6">
               <Mic className="w-6 h-6 text-gold-500" />
-              <h3 className="font-heading text-2xl text-gold-500">Recording Rates</h3>
+              <h3 className="font-heading text-2xl text-gold-500">Recording</h3>
             </div>
             <div className="space-y-4">
               {recordingPricing.map((item, index) => (
@@ -419,6 +419,43 @@ const PricingSection = () => {
             </div>
           </motion.div>
 
+          {/* Room Rates */}
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUp}
+            className="pricing-card p-8"
+            data-testid="pricing-room"
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <Calendar className="w-6 h-6 text-gold-500" />
+              <h3 className="font-heading text-2xl text-gold-500">Room Rates</h3>
+            </div>
+            <div className="space-y-4">
+              {roomRatePricing.map((item, index) => (
+                <div 
+                  key={index}
+                  className="flex justify-between items-center py-3 border-b border-white/5"
+                >
+                  <div>
+                    <span className="text-white font-medium">{item.name}</span>
+                    {item.note && (
+                      <span className="text-gray-500 text-xs block mt-1">{item.note}</span>
+                    )}
+                  </div>
+                  <span className="text-gold-500 font-heading text-xl">{item.price}</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-gray-500 text-sm mt-6">
+              Perfect for artists who bring their own engineer or want to work independently.
+            </p>
+          </motion.div>
+        </div>
+
+        {/* Pricing Cards Container - Bottom Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Mix & Mastering */}
           <motion.div 
             initial="hidden"
@@ -486,7 +523,7 @@ const PricingSection = () => {
               ))}
             </div>
             <p className="text-gray-500 text-sm mt-6">
-              Custom beats crafted to match your unique sound and vision. Contact us to discuss your project.
+              Custom beats crafted to match your unique sound and vision.
             </p>
           </motion.div>
         </div>
