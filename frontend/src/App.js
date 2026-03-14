@@ -23,7 +23,8 @@ import {
   Repeat,
   Clock,
   Sparkles,
-  MessageCircle
+  MessageCircle,
+  Package
 } from "lucide-react";
 import { Button } from "./components/ui/button";
 
