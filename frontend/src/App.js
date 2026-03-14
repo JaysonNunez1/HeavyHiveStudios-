@@ -61,20 +61,24 @@ const services = [
 
 // Pricing data
 const recordingPricing = [
-  { name: "Hourly", price: "$75", note: "Engineer Included" },
-  { name: "3 HR Package", price: "$280", note: "Engineer Included" },
-  { name: "8 HR Package", price: "$520", note: "Engineer Included", featured: true },
-  { name: "12HR Lock-In", price: "$720", note: "Engineer Included" },
-  { name: "Hourly", price: "$50", note: "Excluding Engineer" },
+  { name: "Per HR", price: "$60", note: "Mix included in session" },
+  { name: "3 HR Package", price: "$165", note: "Mix included in session" },
+  { name: "6 HR Package", price: "$300", note: "Mix included in session", featured: true },
+  { name: "12HR Lock-In", price: "$550", note: "Mix included in session" },
+];
+
+const roomRatePricing = [
+  { name: "Per HR", price: "$30", note: "Engineer not included" },
 ];
 
 const mixMasterPricing = [
   { name: "1 Record Mix", price: "$90" },
   { name: "1 Record Mastering", price: "$150" },
-  { name: "Mix + Mastering Package", price: "$200", featured: true },
+  { name: "1 Record Mix + Master", price: "$200", featured: true },
 ];
 
 const beatPricing = [
+  { name: "Leasing", price: "$100+" },
   { name: "Exclusive Leasing", price: "$250+", note: "Full ownership rights" },
 ];
 
