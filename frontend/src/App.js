@@ -554,6 +554,19 @@ const SubscriptionSection = () => {
       featured: false
     },
     {
+      icon: Package,
+      title: "Artist Bundle",
+      price: "$300",
+      period: "/month",
+      features: [
+        "3 recording sessions per month",
+        "4 beats every month",
+        "Studio time + beats combo",
+        "Best value for artists"
+      ],
+      featured: true
+    },
+    {
       icon: Sparkles,
       title: "Weekly Beats",
       price: "$150",
@@ -564,7 +577,7 @@ const SubscriptionSection = () => {
         "In-house producers",
         "Full ownership rights"
       ],
-      featured: true
+      featured: false
     },
     {
       icon: Headphones,
