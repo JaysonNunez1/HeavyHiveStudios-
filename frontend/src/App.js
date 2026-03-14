@@ -731,35 +731,24 @@ const GallerySection = () => {
     { src: ASSETS.studio_desk, alt: "Production Desk Setup" },
   ];
 
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" });
-  
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
-  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
-  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % galleryImages.length);
+  }, [galleryImages.length]);
 
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev - 1 + galleryImages.length) % galleryImages.length);
+  }, [galleryImages.length]);
 
+  // Autoplay effect - advances every 4 seconds
   useEffect(() => {
-    if (!emblaApi) return;
-    onSelect();
-    emblaApi.on("select", onSelect);
-    return () => emblaApi.off("select", onSelect);
-  }, [emblaApi, onSelect]);
-
-  // Autoplay effect - always running with 4 second interval
-  useEffect(() => {
-    if (!emblaApi) return;
-    
     const autoplayInterval = setInterval(() => {
-      emblaApi.scrollNext();
+      nextSlide();
     }, 4000);
 
     return () => clearInterval(autoplayInterval);
-  }, [emblaApi]);
+  }, [nextSlide]);
 
   return (
     <section id="gallery" className="py-24 md:py-32 bg-obsidian relative">
@@ -793,12 +782,15 @@ const GallerySection = () => {
           className="relative"
         >
           {/* Carousel Container */}
-          <div className="overflow-hidden" ref={emblaRef}>
-            <div className="flex">
+          <div className="relative overflow-hidden">
+            <div 
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+            >
               {galleryImages.map((image, index) => (
                 <div
                   key={index}
-                  className="flex-[0_0_100%] min-w-0 px-2"
+                  className="w-full flex-shrink-0 px-2"
                   data-testid={`gallery-slide-${index}`}
                 >
                   <div className="relative overflow-hidden border border-gold-500/20">
@@ -819,16 +811,16 @@ const GallerySection = () => {
 
           {/* Navigation Arrows */}
           <button
-            onClick={scrollPrev}
-            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 hover:bg-gold-500 text-white hover:text-black transition-all border border-gold-500/30 hover:border-gold-500"
+            onClick={prevSlide}
+            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 hover:bg-gold-500 text-white hover:text-black transition-all border border-gold-500/30 hover:border-gold-500 z-10"
             data-testid="carousel-prev"
             aria-label="Previous slide"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
           <button
-            onClick={scrollNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 hover:bg-gold-500 text-white hover:text-black transition-all border border-gold-500/30 hover:border-gold-500"
+            onClick={nextSlide}
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 hover:bg-gold-500 text-white hover:text-black transition-all border border-gold-500/30 hover:border-gold-500 z-10"
             data-testid="carousel-next"
             aria-label="Next slide"
           >
@@ -840,9 +832,9 @@ const GallerySection = () => {
             {galleryImages.map((_, index) => (
               <button
                 key={index}
-                onClick={() => emblaApi && emblaApi.scrollTo(index)}
+                onClick={() => setCurrentSlide(index)}
                 className={`w-3 h-3 transition-all ${
-                  index === selectedIndex 
+                  index === currentSlide 
                     ? 'bg-gold-500 scale-125' 
                     : 'bg-white/30 hover:bg-white/50'
                 }`}
