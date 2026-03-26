@@ -43,20 +43,12 @@ const ASSETS = {
 // Recent work data
 const recentWork = [
   {
-    title: "Grim Reaper",
-    artist: "Yung Brownie",
-    type: "Single",
-    genre: "Hip-Hop/Rap",
-    year: "2025",
-    cover: ASSETS.grim_reaper,
-  },
-  {
-    title: "Colossal",
-    artist: "Bopadoya",
-    type: "Single",
+    title: "Astronomical",
+    artist: "JayoBeatz",
+    type: "Album",
     genre: "Hip-Hop/Rap",
     year: "2026",
-    cover: ASSETS.colossal,
+    cover: ASSETS.astronomical,
   },
   {
     title: "Juiced Up",
@@ -67,12 +59,20 @@ const recentWork = [
     cover: ASSETS.juiced_up,
   },
   {
-    title: "Astronomical",
-    artist: "JayoBeatz",
-    type: "Album",
+    title: "Colossal",
+    artist: "BopaDoya",
+    type: "Single",
     genre: "Hip-Hop/Rap",
     year: "2026",
-    cover: ASSETS.astronomical,
+    cover: ASSETS.colossal,
+  },
+  {
+    title: "Grim Reaper",
+    artist: "Yung Brownie",
+    type: "Single",
+    genre: "Hip-Hop/Rap",
+    year: "2025",
+    cover: ASSETS.grim_reaper,
   },
 ];
 
