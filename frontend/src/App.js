@@ -1170,6 +1170,7 @@ const Home = () => {
       <ServicesSection />
       <PricingSection />
       <SubscriptionSection />
+      <RecentWorkSection />
       <GallerySection />
       <ContactSection />
       <Footer />
