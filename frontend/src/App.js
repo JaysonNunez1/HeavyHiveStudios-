@@ -763,6 +763,113 @@ const SubscriptionSection = () => {
   );
 };
 
+// Recent Work Section
+const RecentWorkSection = () => {
+  return (
+    <section id="recent-work" className="py-24 md:py-32 bg-obsidian-100 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+          className="text-center mb-16"
+        >
+          <motion.p variants={fadeInUp} className="text-gold-500 font-accent tracking-[0.3em] text-sm mb-4">
+            FROM THE HIVE
+          </motion.p>
+          <motion.h2 
+            variants={fadeInUp}
+            className="font-heading text-4xl md:text-6xl text-white"
+            data-testid="recent-work-title"
+          >
+            <span className="text-gold-500">RECENT</span> WORK
+          </motion.h2>
+          <motion.p variants={fadeInUp} className="text-gray-400 mt-4 max-w-xl mx-auto">
+            Check out some of the latest tracks recorded, mixed, and mastered at Heavy Hive Studios.
+          </motion.p>
+        </motion.div>
+
+        {/* Recent Work Grid */}
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+        >
+          {recentWork.map((work, index) => (
+            <motion.div
+              key={index}
+              variants={fadeInUp}
+              className="group relative bg-obsidian border border-gold-500/20 hover:border-gold-500 transition-all duration-300 overflow-hidden"
+              data-testid={`recent-work-${index}`}
+            >
+              {/* Album Cover */}
+              <div className="aspect-square overflow-hidden">
+                <img 
+                  src={work.cover} 
+                  alt={`${work.title} by ${work.artist}`}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              
+              {/* Track Info */}
+              <div className="p-4 bg-obsidian">
+                <h3 className="font-heading text-lg text-white group-hover:text-gold-500 transition-colors truncate">
+                  {work.title}
+                </h3>
+                <p className="text-gold-500 text-sm font-medium truncate">{work.artist}</p>
+                <div className="flex items-center justify-between mt-2">
+                  <span className="text-gray-500 text-xs uppercase tracking-wider">{work.type}</span>
+                  <span className="text-gray-500 text-xs">{work.year}</span>
+                </div>
+              </div>
+
+              {/* Hover overlay with play icon hint */}
+              <div className="absolute inset-0 bg-gold-500/0 group-hover:bg-gold-500/10 transition-all duration-300 flex items-center justify-center pointer-events-none">
+                <div className="w-16 h-16 rounded-full bg-gold-500/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all duration-300">
+                  <Play className="w-8 h-8 text-black ml-1" />
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Call to action */}
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeInUp}
+          className="text-center mt-12"
+        >
+          <p className="text-gray-400 mb-6">
+            Ready to create your next hit? Book a session and join our growing roster of artists.
+          </p>
+          <a 
+            href="https://www.peerspace.com" 
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
+            <Button 
+              className="bg-gold-500 text-black font-bold uppercase tracking-widest hover:bg-gold-400 px-10 py-4 btn-glow"
+              data-testid="recent-work-book-btn"
+            >
+              Book Your Session
+            </Button>
+          </a>
+        </motion.div>
+      </div>
+
+      {/* Decorative elements */}
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-500/30 to-transparent" />
+      <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-500/30 to-transparent" />
+    </section>
+  );
+};
+
 // Gallery Section
 const GallerySection = () => {
   const galleryImages = [
