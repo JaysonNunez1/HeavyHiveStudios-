@@ -804,10 +804,13 @@ const RecentWorkSection = () => {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           {recentWork.map((work, index) => (
-            <motion.div
+            <motion.a
               key={index}
+              href={work.link}
+              target="_blank"
+              rel="noopener noreferrer"
               variants={fadeInUp}
-              className="group relative bg-obsidian border border-gold-500/20 hover:border-gold-500 transition-all duration-300 overflow-hidden"
+              className="group relative bg-obsidian border border-gold-500/20 hover:border-gold-500 transition-all duration-300 overflow-hidden cursor-pointer block"
               data-testid={`recent-work-${index}`}
             >
               {/* Album Cover */}
@@ -837,7 +840,7 @@ const RecentWorkSection = () => {
                   <Play className="w-8 h-8 text-black ml-1" />
                 </div>
               </div>
-            </motion.div>
+            </motion.a>
           ))}
         </motion.div>
 
