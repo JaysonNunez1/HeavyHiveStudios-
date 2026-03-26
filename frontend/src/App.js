@@ -49,6 +49,7 @@ const recentWork = [
     genre: "Hip-Hop/Rap",
     year: "2026",
     cover: ASSETS.astronomical,
+    link: "https://music.apple.com/us/album/astronomical/1879836205",
   },
   {
     title: "Juiced Up",
@@ -57,6 +58,7 @@ const recentWork = [
     genre: "Hip-Hop/Rap",
     year: "2025",
     cover: ASSETS.juiced_up,
+    link: "https://music.apple.com/us/album/juiced-up-single/1862865892",
   },
   {
     title: "Colossal",
@@ -65,6 +67,7 @@ const recentWork = [
     genre: "Hip-Hop/Rap",
     year: "2026",
     cover: ASSETS.colossal,
+    link: "https://music.apple.com/us/album/colossal-single/1869422277",
   },
   {
     title: "Grim Reaper",
@@ -73,6 +76,7 @@ const recentWork = [
     genre: "Hip-Hop/Rap",
     year: "2025",
     cover: ASSETS.grim_reaper,
+    link: "https://music.apple.com/us/album/grim-reaper-single/1834070214",
   },
 ];
 
