@@ -33,7 +33,48 @@ const ASSETS = {
   studio_interior: "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/lvdly506_IMG_0757.jpeg",
   studio_lounge: "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/vad2mitu_IMG_0762.jpeg",
   studio_desk: "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/ydg1vfs3_IMG_0761.jpeg",
+  // Recent work album covers
+  grim_reaper: "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/i3x467im_IMG_0891.jpeg",
+  colossal: "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/pof2z8z1_IMG_0892.jpeg",
+  juiced_up: "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/kw2c38cm_IMG_0893.jpeg",
+  astronomical: "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/eg6gnmie_IMG_0894.jpeg",
 };
+
+// Recent work data
+const recentWork = [
+  {
+    title: "Grim Reaper",
+    artist: "Yung Brownie",
+    type: "Single",
+    genre: "Hip-Hop/Rap",
+    year: "2025",
+    cover: ASSETS.grim_reaper,
+  },
+  {
+    title: "Colossal",
+    artist: "Bopadoya",
+    type: "Single",
+    genre: "Hip-Hop/Rap",
+    year: "2026",
+    cover: ASSETS.colossal,
+  },
+  {
+    title: "Juiced Up",
+    artist: "Rahmeezy",
+    type: "Single",
+    genre: "Hip-Hop/Rap",
+    year: "2025",
+    cover: ASSETS.juiced_up,
+  },
+  {
+    title: "Astronomical",
+    artist: "JayoBeatz",
+    type: "Album",
+    genre: "Hip-Hop/Rap",
+    year: "2026",
+    cover: ASSETS.astronomical,
+  },
+];
 
 // Animation variants
 const fadeInUp = {
