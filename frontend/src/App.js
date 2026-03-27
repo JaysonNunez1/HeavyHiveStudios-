@@ -896,6 +896,94 @@ const RecentWorkSection = () => {
   );
 };
 
+// Roster Section - In-house Team
+const RosterSection = () => {
+  return (
+    <section id="roster" className="py-24 md:py-32 bg-obsidian relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+          className="text-center mb-16"
+        >
+          <motion.p variants={fadeInUp} className="text-gold-500 font-accent tracking-[0.3em] text-sm mb-4">
+            MEET THE TEAM
+          </motion.p>
+          <motion.h2 
+            variants={fadeInUp}
+            className="font-heading text-4xl md:text-6xl text-white"
+            data-testid="roster-title"
+          >
+            OUR <span className="text-gold-500">ROSTER</span>
+          </motion.h2>
+          <motion.p variants={fadeInUp} className="text-gray-400 mt-4 max-w-xl mx-auto">
+            Work with our talented in-house engineers and producers who bring your vision to life.
+          </motion.p>
+        </motion.div>
+
+        {/* Roster Grid */}
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+        >
+          {rosterTeam.map((member, index) => (
+            <motion.div
+              key={index}
+              variants={fadeInUp}
+              className="group relative bg-obsidian-100 border border-gold-500/20 hover:border-gold-500 transition-all duration-300 p-8 text-center"
+              data-testid={`roster-member-${index}`}
+            >
+              {/* Member Icon/Avatar */}
+              <div className="w-24 h-24 mx-auto mb-6 border-2 border-gold-500 flex items-center justify-center group-hover:bg-gold-500 transition-all duration-300">
+                <Mic className="w-10 h-10 text-gold-500 group-hover:text-black transition-colors" />
+              </div>
+              
+              {/* Member Name */}
+              <h3 className="font-heading text-2xl text-white group-hover:text-gold-500 transition-colors mb-4">
+                {member.name}
+              </h3>
+              
+              {/* Roles */}
+              <div className="flex flex-wrap justify-center gap-2 mb-6">
+                {member.roles.map((role, roleIndex) => (
+                  <span 
+                    key={roleIndex}
+                    className="text-xs uppercase tracking-wider px-3 py-1 bg-gold-500/10 text-gold-500 border border-gold-500/30"
+                  >
+                    {role}
+                  </span>
+                ))}
+              </div>
+
+              {/* Instagram Link */}
+              <a
+                href={member.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-gray-400 hover:text-gold-500 transition-colors"
+                data-testid={`roster-instagram-${index}`}
+              >
+                <Instagram className="w-5 h-5" />
+                <span className="text-sm">Follow on Instagram</span>
+              </a>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* Decorative elements */}
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-500/30 to-transparent" />
+      <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-500/30 to-transparent" />
+    </section>
+  );
+};
+
 // Gallery Section
 const GallerySection = () => {
   const galleryImages = [
