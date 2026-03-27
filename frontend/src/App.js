@@ -1285,6 +1285,7 @@ const Home = () => {
       <PricingSection />
       <SubscriptionSection />
       <RecentWorkSection />
+      <RosterSection />
       <GallerySection />
       <ContactSection />
       <Footer />
