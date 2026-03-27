@@ -127,6 +127,25 @@ const beatPricing = [
   { name: "Exclusive Leasing", price: "$250+", note: "Full ownership rights" },
 ];
 
+// Roster data - In-house team
+const rosterTeam = [
+  {
+    name: "JayoBeatz",
+    roles: ["Recording", "Mixing", "Mastering", "Producer"],
+    instagram: "https://www.instagram.com/jayobeatz_?igsh=MWpzMm5mbnVudjdiaA%3D%3D&utm_source=qr",
+  },
+  {
+    name: "FK-47",
+    roles: ["Recording", "Mixing", "Mastering", "Producer"],
+    instagram: "https://www.instagram.com/fk47._?igsh=bGdtcjc0b3Z1dGs2",
+  },
+  {
+    name: "RichTheEngineer",
+    roles: ["Recording", "Mixing", "Mastering"],
+    instagram: "https://www.instagram.com/richtheengineer52?igsh=MTBqa2QwaTRqdDZ5eg==",
+  },
+];
+
 // Navigation Component
 const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
