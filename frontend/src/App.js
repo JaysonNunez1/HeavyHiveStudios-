@@ -740,7 +740,7 @@ const SubscriptionSection = () => {
 
               {/* CTA Button */}
               {sub.contactUs ? (
-                <a href="mailto:heavyhivestudios@gmail.com" className="block">
+                <a href="mailto:heavystudios@gmail.com" className="block">
                   <Button 
                     className="w-full border border-gold-500 text-gold-500 hover:bg-gold-500 hover:text-black uppercase tracking-widest py-4 bg-transparent"
                     data-testid={`subscription-contact-${index}`}
@@ -750,7 +750,7 @@ const SubscriptionSection = () => {
                   </Button>
                 </a>
               ) : (
-                <a href="mailto:heavyhivestudios@gmail.com?subject=Subscription Inquiry - ${sub.title}" className="block">
+                <a href="mailto:heavystudios@gmail.com?subject=Subscription Inquiry - ${sub.title}" className="block">
                   <Button 
                     className={`w-full uppercase tracking-widest py-4 ${
                       sub.featured 
@@ -1165,14 +1165,14 @@ const ContactSection = () => {
             {/* Contact Links */}
             <motion.div variants={fadeInUp} className="space-y-6">
               <a 
-                href="mailto:heavyhivestudios@gmail.com"
+                href="mailto:heavystudios@gmail.com"
                 className="flex items-center gap-4 text-gray-300 hover:text-gold-500 transition-colors group"
                 data-testid="contact-email"
               >
                 <div className="p-3 bg-gold-500/10 group-hover:bg-gold-500 transition-colors">
                   <Mail className="w-6 h-6 text-gold-500 group-hover:text-black transition-colors" />
                 </div>
-                <span className="text-lg">heavyhivestudios@gmail.com</span>
+                <span className="text-lg">heavystudios@gmail.com</span>
               </a>
               
               <a 
@@ -1246,7 +1246,7 @@ const Footer = () => {
           {/* Social Links */}
           <div className="flex items-center gap-6">
             <a 
-              href="mailto:heavyhivestudios@gmail.com"
+              href="mailto:heavystudios@gmail.com"
               className="text-gray-400 hover:text-gold-500 transition-colors"
               aria-label="Email"
               data-testid="footer-email"
