@@ -200,7 +200,7 @@ const Navigation = () => {
 
             {/* CTA Button - Desktop */}
             <a 
-              href="https://www.peerspace.com" 
+              href="https://peerspace.app.link/TKMYBRHhS1b" 
               target="_blank" 
               rel="noopener noreferrer"
               data-testid="nav-book-btn"
@@ -243,7 +243,7 @@ const Navigation = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                href="https://www.peerspace.com"
+                href="https://peerspace.app.link/TKMYBRHhS1b"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-4"
@@ -323,7 +323,7 @@ const HeroSection = () => {
           {/* CTA Buttons */}
           <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
             <a 
-              href="https://www.peerspace.com" 
+              href="https://peerspace.app.link/TKMYBRHhS1b" 
               target="_blank" 
               rel="noopener noreferrer"
               data-testid="hero-book-btn"
@@ -562,7 +562,7 @@ const PricingSection = () => {
             </div>
             <div className="mt-8">
               <a 
-                href="https://www.peerspace.com" 
+                href="https://peerspace.app.link/TKMYBRHhS1b" 
                 target="_blank" 
                 rel="noopener noreferrer"
               >
@@ -891,7 +891,7 @@ const RecentWorkSection = () => {
             Ready to create your next hit? Book a session and join our growing roster of artists.
           </p>
           <a 
-            href="https://www.peerspace.com" 
+            href="https://peerspace.app.link/TKMYBRHhS1b" 
             target="_blank" 
             rel="noopener noreferrer"
           >
@@ -1225,7 +1225,7 @@ const ContactSection = () => {
                 Book your session through Peerspace and start creating your next masterpiece.
               </p>
               <a 
-                href="https://www.peerspace.com"
+                href="https://peerspace.app.link/TKMYBRHhS1b"
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid="contact-book-btn"
