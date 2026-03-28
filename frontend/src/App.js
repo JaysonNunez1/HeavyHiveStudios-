@@ -341,6 +341,22 @@ const HeroSection = () => {
               Explore Services
             </Button>
           </motion.div>
+
+          {/* Watch Commercial Link */}
+          <motion.div variants={fadeInUp} className="pt-6">
+            <a 
+              href="https://www.instagram.com/reel/DWZis02j280/?igsh=MW94OXJvNzFvbTcwdQ=="
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 text-gray-400 hover:text-gold-500 transition-colors group"
+              data-testid="hero-commercial-btn"
+            >
+              <div className="w-12 h-12 rounded-full border-2 border-gold-500/50 group-hover:border-gold-500 flex items-center justify-center group-hover:bg-gold-500 transition-all">
+                <Play className="w-5 h-5 text-gold-500 group-hover:text-black ml-0.5" />
+              </div>
+              <span className="uppercase tracking-widest text-sm font-medium">Watch Our Commercial</span>
+            </a>
+          </motion.div>
         </motion.div>
 
         {/* Scroll indicator */}
