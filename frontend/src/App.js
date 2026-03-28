@@ -849,11 +849,11 @@ const RecentWorkSection = () => {
               data-testid={`recent-work-${index}`}
             >
               {/* Album Cover */}
-              <div className="aspect-square overflow-hidden">
+              <div className="bg-black p-3">
                 <img 
                   src={work.cover} 
                   alt={`${work.title} by ${work.artist}`}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
               
