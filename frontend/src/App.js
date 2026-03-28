@@ -1007,6 +1007,7 @@ const GallerySection = () => {
     { src: ASSETS.studio_interior, alt: "Heavy Hive Studio Interior" },
     { src: ASSETS.studio_lounge, alt: "Studio Lounge Area" },
     { src: ASSETS.studio_desk, alt: "Production Desk Setup" },
+    { src: ASSETS.studio_session, alt: "Live Recording Session" },
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
