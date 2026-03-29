@@ -620,12 +620,15 @@ const PricingSection = () => {
   );
 };
 
-// Subscription Section
+// Subscription Section with Stripe Checkout
 const SubscriptionSection = () => {
+  const [loadingPlan, setLoadingPlan] = useState(null);
+  
   const subscriptions = [
     {
       icon: Clock,
       title: "Studio Time",
+      planId: "studio-time",
       price: "$150",
       period: "/month",
       features: [
@@ -639,6 +642,7 @@ const SubscriptionSection = () => {
     {
       icon: Package,
       title: "Artist Bundle",
+      planId: "artist-bundle",
       price: "$300",
       period: "/month",
       features: [
@@ -652,6 +656,7 @@ const SubscriptionSection = () => {
     {
       icon: Sparkles,
       title: "Weekly Beats",
+      planId: "weekly-beats",
       price: "$150",
       period: "/month",
       features: [
@@ -665,6 +670,7 @@ const SubscriptionSection = () => {
     {
       icon: Headphones,
       title: "Mix & Master",
+      planId: null,
       price: "Custom",
       period: "",
       features: [
@@ -677,6 +683,46 @@ const SubscriptionSection = () => {
       contactUs: true
     }
   ];
+
+  const handleSubscribe = async (planId) => {
+    if (!planId) return;
+    
+    setLoadingPlan(planId);
+    
+    try {
+      const originUrl = window.location.origin;
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
+      
+      const response = await fetch(`${backendUrl}/api/subscriptions/checkout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          plan_id: planId,
+          origin_url: originUrl,
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to create checkout session');
+      }
+      
+      const data = await response.json();
+      
+      // Redirect to Stripe Checkout
+      if (data.checkout_url) {
+        window.location.href = data.checkout_url;
+      } else {
+        throw new Error('No checkout URL received');
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      alert('Failed to start checkout. Please try again or contact us.');
+    } finally {
+      setLoadingPlan(null);
+    }
+  };
 
   return (
     <section id="subscriptions" className="py-24 md:py-32 bg-obsidian relative">
@@ -770,18 +816,25 @@ const SubscriptionSection = () => {
                   </Button>
                 </a>
               ) : (
-                <a href="mailto:heavystudios@gmail.com?subject=Subscription Inquiry - ${sub.title}" className="block">
-                  <Button 
-                    className={`w-full uppercase tracking-widest py-4 ${
-                      sub.featured 
-                        ? 'bg-gold-500 text-black hover:bg-gold-400' 
-                        : 'border border-gold-500 text-gold-500 hover:bg-gold-500 hover:text-black bg-transparent'
-                    }`}
-                    data-testid={`subscription-cta-${index}`}
-                  >
-                    Subscribe Now
-                  </Button>
-                </a>
+                <Button 
+                  onClick={() => handleSubscribe(sub.planId)}
+                  disabled={loadingPlan === sub.planId}
+                  className={`w-full uppercase tracking-widest py-4 ${
+                    sub.featured 
+                      ? 'bg-gold-500 text-black hover:bg-gold-400' 
+                      : 'border border-gold-500 text-gold-500 hover:bg-gold-500 hover:text-black bg-transparent'
+                  }`}
+                  data-testid={`subscription-cta-${index}`}
+                >
+                  {loadingPlan === sub.planId ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    'Subscribe Now'
+                  )}
+                </Button>
               )}
             </motion.div>
           ))}
@@ -795,7 +848,7 @@ const SubscriptionSection = () => {
           variants={fadeInUp}
           className="text-center text-gray-500 text-sm mt-12"
         >
-          All subscriptions are billed monthly. Cancel anytime. Contact us for custom packages.
+          All subscriptions are billed monthly. Secure checkout powered by Stripe.
         </motion.p>
       </div>
 
