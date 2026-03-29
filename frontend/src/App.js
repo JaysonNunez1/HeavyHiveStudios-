@@ -23,7 +23,10 @@ import {
   Clock,
   Sparkles,
   MessageCircle,
-  Package
+  Package,
+  Loader2,
+  CheckCircle,
+  XCircle
 } from "lucide-react";
 import { Button } from "./components/ui/button";
 
