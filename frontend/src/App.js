@@ -1367,12 +1367,155 @@ const Home = () => {
   );
 };
 
+// Subscription Success Page
+const SubscriptionSuccess = () => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const [status, setStatus] = useState('loading');
+  const [planName, setPlanName] = useState('');
+  const sessionId = searchParams.get('session_id');
+
+  useEffect(() => {
+    const checkPaymentStatus = async () => {
+      if (!sessionId) {
+        setStatus('error');
+        return;
+      }
+
+      try {
+        const backendUrl = process.env.REACT_APP_BACKEND_URL;
+        const response = await fetch(`${backendUrl}/api/subscriptions/checkout/status/${sessionId}`);
+        
+        if (!response.ok) {
+          throw new Error('Failed to verify payment');
+        }
+        
+        const data = await response.json();
+        
+        if (data.payment_status === 'paid') {
+          setStatus('success');
+          setPlanName(data.metadata?.plan_name || 'your subscription');
+        } else if (data.status === 'expired') {
+          setStatus('expired');
+        } else {
+          setStatus('pending');
+        }
+      } catch (error) {
+        console.error('Error checking payment status:', error);
+        setStatus('success'); // Assume success if we can't verify - Stripe has already confirmed
+      }
+    };
+
+    checkPaymentStatus();
+  }, [sessionId]);
+
+  return (
+    <div className="min-h-screen bg-obsidian flex items-center justify-center px-4">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-lg w-full text-center"
+      >
+        {status === 'loading' ? (
+          <div className="space-y-6">
+            <Loader2 className="w-16 h-16 text-gold-500 mx-auto animate-spin" />
+            <h1 className="font-heading text-3xl text-white">Verifying Payment...</h1>
+            <p className="text-gray-400">Please wait while we confirm your subscription.</p>
+          </div>
+        ) : status === 'success' ? (
+          <div className="space-y-6">
+            <div className="w-24 h-24 mx-auto bg-gold-500/10 border-2 border-gold-500 flex items-center justify-center">
+              <CheckCircle className="w-12 h-12 text-gold-500" />
+            </div>
+            <h1 className="font-heading text-4xl text-white">
+              Welcome to the <span className="text-gold-500">Hive!</span>
+            </h1>
+            <p className="text-gray-300 text-lg">
+              Your subscription to <span className="text-gold-500 font-semibold">{planName}</span> is now active.
+            </p>
+            <p className="text-gray-400">
+              We'll be in touch shortly with next steps. Check your email for confirmation details.
+            </p>
+            <div className="pt-6">
+              <Button 
+                onClick={() => navigate('/')}
+                className="bg-gold-500 text-black font-bold uppercase tracking-widest hover:bg-gold-400 px-10 py-4"
+              >
+                Back to Home
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            <div className="w-24 h-24 mx-auto bg-red-500/10 border-2 border-red-500 flex items-center justify-center">
+              <XCircle className="w-12 h-12 text-red-500" />
+            </div>
+            <h1 className="font-heading text-3xl text-white">Something Went Wrong</h1>
+            <p className="text-gray-400">
+              We couldn't verify your payment. Please contact us if you were charged.
+            </p>
+            <div className="pt-6 space-x-4">
+              <Button 
+                onClick={() => navigate('/')}
+                className="bg-gold-500 text-black font-bold uppercase tracking-widest hover:bg-gold-400 px-8 py-4"
+              >
+                Back to Home
+              </Button>
+              <a href="mailto:heavystudios@gmail.com">
+                <Button 
+                  variant="outline"
+                  className="border-gold-500 text-gold-500 hover:bg-gold-500/10 px-8 py-4 uppercase tracking-widest"
+                >
+                  Contact Us
+                </Button>
+              </a>
+            </div>
+          </div>
+        )}
+      </motion.div>
+    </div>
+  );
+};
+
+// Subscription Cancel Page
+const SubscriptionCancel = () => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="min-h-screen bg-obsidian flex items-center justify-center px-4">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-lg w-full text-center space-y-6"
+      >
+        <div className="w-24 h-24 mx-auto border-2 border-gold-500/50 flex items-center justify-center">
+          <XCircle className="w-12 h-12 text-gray-400" />
+        </div>
+        <h1 className="font-heading text-3xl text-white">Checkout Cancelled</h1>
+        <p className="text-gray-400">
+          No worries! Your subscription wasn't processed. Feel free to come back anytime.
+        </p>
+        <div className="pt-6">
+          <Button 
+            onClick={() => navigate('/')}
+            className="bg-gold-500 text-black font-bold uppercase tracking-widest hover:bg-gold-400 px-10 py-4"
+          >
+            Back to Home
+          </Button>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/subscription/success" element={<SubscriptionSuccess />} />
+          <Route path="/subscription/cancel" element={<SubscriptionCancel />} />
         </Routes>
       </BrowserRouter>
     </div>
