@@ -806,15 +806,14 @@ const SubscriptionSection = () => {
 
               {/* CTA Button */}
               {sub.contactUs ? (
-                <a href="mailto:heavystudios@gmail.com" className="block">
-                  <Button 
-                    className="w-full border border-gold-500 text-gold-500 hover:bg-gold-500 hover:text-black uppercase tracking-widest py-4 bg-transparent"
-                    data-testid={`subscription-contact-${index}`}
-                  >
-                    <MessageCircle className="w-4 h-4 mr-2" />
-                    Contact Us
-                  </Button>
-                </a>
+                <Button 
+                  onClick={() => window.location.href = 'mailto:heavystudios@gmail.com'}
+                  className="w-full border border-gold-500 text-gold-500 hover:bg-gold-500 hover:text-black uppercase tracking-widest py-4 bg-transparent"
+                  data-testid={`subscription-contact-${index}`}
+                >
+                  <MessageCircle className="w-4 h-4 mr-2" />
+                  Contact Us
+                </Button>
               ) : (
                 <Button 
                   onClick={() => handleSubscribe(sub.planId)}
