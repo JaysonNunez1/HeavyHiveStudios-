@@ -1318,14 +1318,14 @@ const Footer = () => {
 
           {/* Social Links */}
           <div className="flex items-center gap-6">
-            <a 
-              href="mailto:heavystudios@gmail.com"
-              className="text-gray-400 hover:text-gold-500 transition-colors"
+            <button 
+              onClick={() => window.location.href = 'mailto:heavystudios@gmail.com'}
+              className="text-gray-400 hover:text-gold-500 transition-colors cursor-pointer"
               aria-label="Email"
               data-testid="footer-email"
             >
               <Mail className="w-5 h-5" />
-            </a>
+            </button>
             <a 
               href="https://instagram.com/heavyhivestudios"
               target="_blank"
