@@ -1237,16 +1237,16 @@ const ContactSection = () => {
 
             {/* Contact Links */}
             <motion.div variants={fadeInUp} className="space-y-6">
-              <a 
-                href="mailto:heavystudios@gmail.com"
-                className="flex items-center gap-4 text-gray-300 hover:text-gold-500 transition-colors group"
+              <button 
+                onClick={() => window.location.href = 'mailto:heavystudios@gmail.com'}
+                className="flex items-center gap-4 text-gray-300 hover:text-gold-500 transition-colors group cursor-pointer"
                 data-testid="contact-email"
               >
                 <div className="p-3 bg-gold-500/10 group-hover:bg-gold-500 transition-colors">
                   <Mail className="w-6 h-6 text-gold-500 group-hover:text-black transition-colors" />
                 </div>
                 <span className="text-lg">heavystudios@gmail.com</span>
-              </a>
+              </button>
               
               <a 
                 href="https://instagram.com/heavyhivestudios"
