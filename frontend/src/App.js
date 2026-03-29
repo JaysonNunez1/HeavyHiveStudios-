@@ -1460,14 +1460,13 @@ const SubscriptionSuccess = () => {
               >
                 Back to Home
               </Button>
-              <a href="mailto:heavystudios@gmail.com">
-                <Button 
-                  variant="outline"
-                  className="border-gold-500 text-gold-500 hover:bg-gold-500/10 px-8 py-4 uppercase tracking-widest"
-                >
-                  Contact Us
-                </Button>
-              </a>
+              <Button 
+                onClick={() => window.location.href = 'mailto:heavystudios@gmail.com'}
+                variant="outline"
+                className="border-gold-500 text-gold-500 hover:bg-gold-500/10 px-8 py-4 uppercase tracking-widest"
+              >
+                Contact Us
+              </Button>
             </div>
           </div>
         )}
