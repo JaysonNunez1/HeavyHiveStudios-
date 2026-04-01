@@ -1526,6 +1526,7 @@ const Home = () => {
     <div className="min-h-screen bg-obsidian">
       <Navigation />
       <HeroSection />
+      <PromoVideoSection />
       <ServicesSection />
       <PricingSection />
       <SubscriptionSection />
