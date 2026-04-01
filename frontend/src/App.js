@@ -26,7 +26,10 @@ import {
   Package,
   Loader2,
   CheckCircle,
-  XCircle
+  XCircle,
+  Volume2,
+  VolumeX,
+  Pause
 } from "lucide-react";
 import { Button } from "./components/ui/button";
 
