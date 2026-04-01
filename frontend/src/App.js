@@ -353,18 +353,16 @@ const HeroSection = () => {
 
           {/* Watch Commercial Link */}
           <motion.div variants={fadeInUp} className="pt-6">
-            <a 
-              href="https://www.instagram.com/reel/DWZis02j280/?igsh=MW94OXJvNzFvbTcwdQ=="
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 text-gray-400 hover:text-gold-500 transition-colors group"
+            <button 
+              onClick={() => document.getElementById('promo-video')?.scrollIntoView({ behavior: 'smooth' })}
+              className="inline-flex items-center gap-3 text-gray-400 hover:text-gold-500 transition-colors group cursor-pointer"
               data-testid="hero-commercial-btn"
             >
               <div className="w-12 h-12 rounded-full border-2 border-gold-500/50 group-hover:border-gold-500 flex items-center justify-center group-hover:bg-gold-500 transition-all">
                 <Play className="w-5 h-5 text-gold-500 group-hover:text-black ml-0.5" />
               </div>
               <span className="uppercase tracking-widest text-sm font-medium">Watch Our Commercial</span>
-            </a>
+            </button>
           </motion.div>
         </motion.div>
 
@@ -378,6 +376,175 @@ const HeroSection = () => {
           <ChevronDown className="w-8 h-8 text-gold-500 animate-bounce" />
         </motion.div>
       </div>
+    </section>
+  );
+};
+
+// Promo Video Section with Autoplay on Scroll
+const PromoVideoSection = () => {
+  const videoRef = useRef(null);
+  const sectionRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    const section = sectionRef.current;
+    
+    if (!video || !section) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Video is in view - play it
+            video.play().then(() => {
+              setIsPlaying(true);
+            }).catch((err) => {
+              console.log('Autoplay prevented:', err);
+            });
+          } else {
+            // Video is out of view - pause it
+            video.pause();
+            setIsPlaying(false);
+          }
+        });
+      },
+      { threshold: 0.5 } // Trigger when 50% of the video is visible
+    );
+
+    observer.observe(section);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const togglePlay = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    
+    if (isPlaying) {
+      video.pause();
+      setIsPlaying(false);
+    } else {
+      video.play();
+      setIsPlaying(true);
+    }
+  };
+
+  const toggleMute = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    
+    video.muted = !video.muted;
+    setIsMuted(video.muted);
+  };
+
+  return (
+    <section id="promo-video" ref={sectionRef} className="py-16 md:py-24 bg-obsidian-100 relative">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+          className="text-center mb-10"
+        >
+          <motion.p variants={fadeInUp} className="text-gold-500 font-accent tracking-[0.3em] text-sm mb-4">
+            SEE IT IN ACTION
+          </motion.p>
+          <motion.h2 
+            variants={fadeInUp}
+            className="font-heading text-3xl md:text-5xl text-white"
+            data-testid="promo-video-title"
+          >
+            THE <span className="text-gold-500">HEAVY HIVE</span> EXPERIENCE
+          </motion.h2>
+        </motion.div>
+
+        {/* Video Container */}
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="relative border border-gold-500/30 overflow-hidden group"
+        >
+          {/* Video Element */}
+          <video
+            ref={videoRef}
+            src={ASSETS.promo_video}
+            className="w-full h-auto"
+            muted={isMuted}
+            loop
+            playsInline
+            preload="metadata"
+            data-testid="promo-video"
+          />
+
+          {/* Video Controls Overlay */}
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 md:p-6 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            {/* Play/Pause Button */}
+            <button
+              onClick={togglePlay}
+              className="flex items-center gap-2 text-white hover:text-gold-500 transition-colors"
+              data-testid="video-play-toggle"
+            >
+              {isPlaying ? (
+                <Pause className="w-6 h-6" />
+              ) : (
+                <Play className="w-6 h-6" />
+              )}
+              <span className="text-sm uppercase tracking-wider hidden md:inline">
+                {isPlaying ? 'Pause' : 'Play'}
+              </span>
+            </button>
+
+            {/* Mute/Unmute Button */}
+            <button
+              onClick={toggleMute}
+              className="flex items-center gap-2 text-white hover:text-gold-500 transition-colors"
+              data-testid="video-mute-toggle"
+            >
+              {isMuted ? (
+                <VolumeX className="w-6 h-6" />
+              ) : (
+                <Volume2 className="w-6 h-6" />
+              )}
+              <span className="text-sm uppercase tracking-wider hidden md:inline">
+                {isMuted ? 'Unmute' : 'Mute'}
+              </span>
+            </button>
+          </div>
+
+          {/* Play Button Overlay (shown when paused) */}
+          {!isPlaying && (
+            <div 
+              className="absolute inset-0 flex items-center justify-center bg-black/30 cursor-pointer"
+              onClick={togglePlay}
+            >
+              <div className="w-20 h-20 rounded-full bg-gold-500/90 flex items-center justify-center hover:bg-gold-500 transition-colors">
+                <Play className="w-10 h-10 text-black ml-1" />
+              </div>
+            </div>
+          )}
+        </motion.div>
+
+        {/* Caption */}
+        <motion.p 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="text-center text-gray-500 text-sm mt-6"
+        >
+          A creative hub made for artists, by artists.
+        </motion.p>
+      </div>
+
+      {/* Decorative elements */}
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-500/30 to-transparent" />
+      <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-500/30 to-transparent" />
     </section>
   );
 };
