@@ -139,6 +139,13 @@ const beatPricing = [
 // Roster data - In-house team
 const rosterTeam = [
   {
+    name: "Rahmeezy",
+    roles: ["Artist", "Entrepreneur", "Studio Owner"],
+    instagram: "https://www.instagram.com/raaborahmeezy?igsh=MXZhOWNqbWwxNGJ4Nw==",
+    isOwner: true,
+    title: "Head of the Hive"
+  },
+  {
     name: "JayoBeatz",
     roles: ["Recording", "Mixing", "Mastering", "Producer"],
     instagram: "https://www.instagram.com/jayobeatz_?igsh=MWpzMm5mbnVudjdiaA%3D%3D&utm_source=qr",
