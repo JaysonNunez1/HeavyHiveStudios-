@@ -1181,22 +1181,47 @@ const RosterSection = () => {
           whileInView="visible"
           viewport={{ once: true }}
           variants={staggerContainer}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           {rosterTeam.map((member, index) => (
             <motion.div
               key={index}
               variants={fadeInUp}
-              className="group relative bg-obsidian-100 border border-gold-500/20 hover:border-gold-500 transition-all duration-300 p-8 text-center"
+              className={`group relative border transition-all duration-300 p-8 text-center ${
+                member.isOwner 
+                  ? 'bg-gold-500/10 border-gold-500 md:col-span-2 lg:col-span-1' 
+                  : 'bg-obsidian-100 border-gold-500/20 hover:border-gold-500'
+              }`}
               data-testid={`roster-member-${index}`}
             >
+              {/* Owner Badge */}
+              {member.isOwner && (
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <span className="bg-gold-500 text-black font-bold text-xs tracking-widest px-4 py-1 uppercase">
+                    {member.title}
+                  </span>
+                </div>
+              )}
+
               {/* Member Icon/Avatar */}
-              <div className="w-24 h-24 mx-auto mb-6 border-2 border-gold-500 flex items-center justify-center group-hover:bg-gold-500 transition-all duration-300">
-                <Mic className="w-10 h-10 text-gold-500 group-hover:text-black transition-colors" />
+              <div className={`w-24 h-24 mx-auto mb-6 border-2 flex items-center justify-center transition-all duration-300 ${
+                member.isOwner 
+                  ? 'border-gold-500 bg-gold-500' 
+                  : 'border-gold-500 group-hover:bg-gold-500'
+              }`}>
+                <Mic className={`w-10 h-10 transition-colors ${
+                  member.isOwner 
+                    ? 'text-black' 
+                    : 'text-gold-500 group-hover:text-black'
+                }`} />
               </div>
               
               {/* Member Name */}
-              <h3 className="font-heading text-2xl text-white group-hover:text-gold-500 transition-colors mb-4">
+              <h3 className={`font-heading text-2xl transition-colors mb-4 ${
+                member.isOwner 
+                  ? 'text-gold-500' 
+                  : 'text-white group-hover:text-gold-500'
+              }`}>
                 {member.name}
               </h3>
               
@@ -1205,7 +1230,11 @@ const RosterSection = () => {
                 {member.roles.map((role, roleIndex) => (
                   <span 
                     key={roleIndex}
-                    className="text-xs uppercase tracking-wider px-3 py-1 bg-gold-500/10 text-gold-500 border border-gold-500/30"
+                    className={`text-xs uppercase tracking-wider px-3 py-1 border ${
+                      member.isOwner 
+                        ? 'bg-gold-500/20 text-gold-400 border-gold-500/50' 
+                        : 'bg-gold-500/10 text-gold-500 border-gold-500/30'
+                    }`}
                   >
                     {role}
                   </span>
