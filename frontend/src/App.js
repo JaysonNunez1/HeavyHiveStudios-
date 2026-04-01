@@ -37,6 +37,8 @@ const ASSETS = {
   studio_lounge: "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/vad2mitu_IMG_0762.jpeg",
   studio_desk: "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/ydg1vfs3_IMG_0761.jpeg",
   studio_session: "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/s7p219kf_IMG_0910.jpeg",
+  // Promo video
+  promo_video: "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/fxqctace_HEAVY_HIVE_PROMO_VIDEO00222.MP4",
   // Recent work album covers - corrected mapping
   astronomical: "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/ou3uv5sg_IMG_0891.jpeg",
   juiced_up: "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/d6c5vclr_IMG_0892.jpeg",
