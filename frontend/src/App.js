@@ -792,6 +792,21 @@ const PricingSection = () => {
             </p>
           </motion.div>
         </div>
+
+        {/* Important Notes */}
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeInUp}
+          className="mt-10 p-6 border border-gold-500/20 bg-obsidian"
+        >
+          <p className="text-gray-400 text-sm leading-relaxed">
+            <span className="text-gold-500 font-semibold">Please Note:</span> All sessions require a 2 hour minimum. 
+            Recording sessions include a basic mix, but not a radio-ready mix. 
+            For a radio-ready mix and master, please see our Mix & Mastering prices — $90 for mix or $200 for mix and master.
+          </p>
+        </motion.div>
       </div>
 
       {/* Decorative elements */}
