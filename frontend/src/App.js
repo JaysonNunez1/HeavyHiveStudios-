@@ -139,7 +139,7 @@ const beatPricing = [
 // Roster data - In-house team
 const rosterTeam = [
   {
-    name: "Rahmeezy",
+    name: "Rahmel Brown",
     roles: ["Artist", "Entrepreneur", "Studio Owner"],
     instagram: "https://www.instagram.com/raaborahmeezy?igsh=MXZhOWNqbWwxNGJ4Nw==",
     isOwner: true,
