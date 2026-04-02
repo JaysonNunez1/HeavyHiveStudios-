@@ -47,6 +47,7 @@ const ASSETS = {
   juiced_up: "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/d6c5vclr_IMG_0892.jpeg",
   colossal: "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/5h9bj93c_IMG_0893.jpeg",
   grim_reaper: "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/jcu3p098_IMG_0894.jpeg",
+  ice: "https://customer-assets.emergentagent.com/job_12c86c6d-cb8b-4604-b112-352b65bebaf5/artifacts/kzwpzxq7_IMG_0930.jpeg",
 };
 
 // Recent work data
