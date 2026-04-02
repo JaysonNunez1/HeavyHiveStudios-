@@ -141,7 +141,7 @@ const rosterTeam = [
   {
     name: "Rahmel Brown",
     roles: ["Artist", "Entrepreneur", "Studio Owner"],
-    instagram: "https://www.instagram.com/raaborahmeezy?igsh=MXZhOWNqbWwxNGJ4Nw==",
+    instagram: "https://www.instagram.com/rahmeezy?igsh=MTY2d2R6ZmViNWZ1eg==",
     isOwner: true,
     title: "Head of the Hive"
   },
