@@ -481,7 +481,7 @@ const PromoVideoSection = () => {
           <video
             ref={videoRef}
             src={ASSETS.promo_video}
-            className="w-full h-auto max-h-[400px] object-cover"
+            className="w-full h-auto"
             muted={isMuted}
             loop
             playsInline
