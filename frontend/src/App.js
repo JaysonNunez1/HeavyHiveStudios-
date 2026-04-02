@@ -167,7 +167,9 @@ const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const scrollToSection = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    // Convert to lowercase and replace spaces with hyphens for section IDs
+    const sectionId = id.toLowerCase().replace(/\s+/g, '-');
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
     setMobileMenuOpen(false);
   };
 
