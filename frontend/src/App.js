@@ -53,6 +53,15 @@ const ASSETS = {
 // Recent work data
 const recentWork = [
   {
+    title: "I.C.E",
+    artist: "Rahmeezy",
+    type: "Single",
+    genre: "Hip-Hop/Rap",
+    year: "2025",
+    cover: ASSETS.ice,
+    link: "https://music.apple.com/us/album/i-c-e-single/1872808579",
+  },
+  {
     title: "Astronomical",
     artist: "JayoBeatz",
     type: "Album",
