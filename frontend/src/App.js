@@ -1187,10 +1187,10 @@ const RosterSection = () => {
             <motion.div
               key={index}
               variants={fadeInUp}
-              className={`group relative border transition-all duration-300 p-8 text-center ${
+              className={`group relative border transition-all duration-300 p-8 text-center bg-obsidian-100 ${
                 member.isOwner 
-                  ? 'bg-gold-500/10 border-gold-500 md:col-span-2 lg:col-span-1' 
-                  : 'bg-obsidian-100 border-gold-500/20 hover:border-gold-500'
+                  ? 'border-gold-500' 
+                  : 'border-gold-500/20 hover:border-gold-500'
               }`}
               data-testid={`roster-member-${index}`}
             >
