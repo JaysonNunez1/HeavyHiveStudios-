@@ -447,22 +447,22 @@ const PromoVideoSection = () => {
   };
 
   return (
-    <section id="promo-video" ref={sectionRef} className="py-16 md:py-24 bg-obsidian-100 relative">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="promo-video" ref={sectionRef} className="py-12 md:py-16 bg-obsidian-100 relative">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div 
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={staggerContainer}
-          className="text-center mb-10"
+          className="text-center mb-8"
         >
-          <motion.p variants={fadeInUp} className="text-gold-500 font-accent tracking-[0.3em] text-sm mb-4">
+          <motion.p variants={fadeInUp} className="text-gold-500 font-accent tracking-[0.3em] text-sm mb-3">
             SEE IT IN ACTION
           </motion.p>
           <motion.h2 
             variants={fadeInUp}
-            className="font-heading text-3xl md:text-5xl text-white"
+            className="font-heading text-2xl md:text-4xl text-white"
             data-testid="promo-video-title"
           >
             THE <span className="text-gold-500">HEAVY HIVE</span> EXPERIENCE
@@ -481,7 +481,7 @@ const PromoVideoSection = () => {
           <video
             ref={videoRef}
             src={ASSETS.promo_video}
-            className="w-full h-auto"
+            className="w-full h-auto max-h-[400px] object-cover"
             muted={isMuted}
             loop
             playsInline
