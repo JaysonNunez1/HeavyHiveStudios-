@@ -1473,14 +1473,14 @@ const ContactSection = () => {
             {/* Contact Links */}
             <motion.div variants={fadeInUp} className="space-y-6">
               <button 
-                onClick={() => window.location.href = 'mailto:heavystudios@gmail.com'}
+                onClick={() => window.location.href = 'mailto:heavyhivestudios@gmail.com'}
                 className="flex items-center gap-4 text-gray-300 hover:text-gold-500 transition-colors group cursor-pointer"
                 data-testid="contact-email"
               >
                 <div className="p-3 bg-gold-500/10 group-hover:bg-gold-500 transition-colors">
                   <Mail className="w-6 h-6 text-gold-500 group-hover:text-black transition-colors" />
                 </div>
-                <span className="text-lg">heavystudios@gmail.com</span>
+                <span className="text-lg">heavyhivestudios@gmail.com</span>
               </button>
               
               <a 
@@ -1554,7 +1554,7 @@ const Footer = () => {
           {/* Social Links */}
           <div className="flex items-center gap-6">
             <button 
-              onClick={() => window.location.href = 'mailto:heavystudios@gmail.com'}
+              onClick={() => window.location.href = 'mailto:heavyhivestudios@gmail.com'}
               className="text-gray-400 hover:text-gold-500 transition-colors cursor-pointer"
               aria-label="Email"
               data-testid="footer-email"
@@ -1697,7 +1697,7 @@ const SubscriptionSuccess = () => {
                 Back to Home
               </Button>
               <Button 
-                onClick={() => window.location.href = 'mailto:heavystudios@gmail.com'}
+                onClick={() => window.location.href = 'mailto:heavyhivestudios@gmail.com'}
                 variant="outline"
                 className="border-gold-500 text-gold-500 hover:bg-gold-500/10 px-8 py-4 uppercase tracking-widest"
               >
