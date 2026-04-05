@@ -834,7 +834,7 @@ const SubscriptionSection = () => {
     {
       icon: Clock,
       title: "Studio Time",
-      planId: "prod_UGUvxKcobbLDvF",
+      planId: "price_1THxvbKPFpDMdL7yYCr12yYn",
       price: "$150",
       period: "/month",
       features: [
