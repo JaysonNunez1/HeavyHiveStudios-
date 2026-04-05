@@ -862,7 +862,7 @@ const SubscriptionSection = () => {
     {
       icon: Sparkles,
       title: "Weekly Beats",
-      planId: "weekly-beats",
+      planId: "price_1THxtKKPFpDMdL7ytrA4DwTS",
       price: "$150",
       period: "/month",
       features: [
