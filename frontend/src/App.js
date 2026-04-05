@@ -848,7 +848,7 @@ const SubscriptionSection = () => {
     {
       icon: Package,
       title: "Artist Bundle",
-      planId: "artist-bundle",
+      planId: "price_1TIw65KPFpDMdL7ykIqsnBmz",
       price: "$300",
       period: "/month",
       features: [
