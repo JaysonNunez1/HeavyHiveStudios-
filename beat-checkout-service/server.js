@@ -28,6 +28,11 @@ const nodemailer = require('nodemailer');
 // ============================================
 
 const app = express();
+app.use(cors({
+  origin: 'https://heavy-hive-studios.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 const PORT = process.env.PORT || 3001;
 
 // Initialize Stripe with your secret key
