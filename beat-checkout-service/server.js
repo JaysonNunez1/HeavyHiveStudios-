@@ -394,6 +394,37 @@ app.use((err, req, res, next) => {
     message: process.env.NODE_ENV === 'development' ? err.message : undefined
   });
 });
+// --- Subscription Checkout Route ---
+app.post('/api/subscriptions/checkout', async (req, res) => {
+  try {
+    const { plan_id, origin_url } = req.body;
+
+    if (!plan_id) {
+      return res.status(400).json({ error: 'Missing plan_id' });
+    }
+
+    // Tell Stripe to create a secure checkout page
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price: plan_id, // Your frontend is sending the 'price_...' ID here!
+          quantity: 1,
+        },
+      ],
+      mode: 'subscription', // Use 'payment' if it's a one-time fee, 'subscription' for monthly
+      success_url: `${origin_url}?success=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin_url}?canceled=true`,
+    });
+
+    // Send the Stripe URL back to the frontend
+    res.json({ checkout_url: session.url });
+
+  } catch (error) {
+    console.error('Stripe Checkout Error:', error);
+    res.status(500).json({ error: 'Failed to create checkout session' });
+  }
+});
 
 // 404 handler
 app.use((req, res) => {
