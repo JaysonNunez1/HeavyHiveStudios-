@@ -1,7 +1,7 @@
 import "@/App.css";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { BrowserRouter, Routes, Route, useSearchParams, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { 
   Mic, 
   Music, 
@@ -170,7 +170,20 @@ const rosterTeam = [
     roles: ["Recording", "Mixing", "Mastering"],
     instagram: "https://www.instagram.com/richtheengineer52?igsh=MTBqa2QwaTRqdDZ5eg==",
   },
+  {
+    name: "SoundsByOso",
+    roles: ["Recording", "Mixing", "Mastering"],
+    instagram: "https://www.instagram.com/soundsbyoso?igsh=cjhmem44cjZjMWZ5",
+  },
 ];
+
+// Scroll Progress Bar - gold level meter across the top of the page
+const ScrollProgress = () => {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+
+  return <motion.div className="scroll-progress" style={{ scaleX }} />;
+};
 
 // Navigation Component
 const Navigation = () => {
@@ -197,7 +210,7 @@ const Navigation = () => {
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <div className="flex items-center gap-2">
-              <div className="text-gold-500 font-heading text-2xl tracking-wider">
+              <div className="text-gold-500 font-heading text-2xl tracking-wider hover:tracking-[0.2em] transition-all duration-300 cursor-default">
                 HEAVY<span className="text-white">HIVE</span>
               </div>
             </div>
@@ -295,7 +308,7 @@ const HeroSection = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat ken-burns"
         style={{ backgroundImage: `url(${ASSETS.hero_bg})` }}
       />
       
@@ -326,7 +339,7 @@ const HeroSection = () => {
             className="font-heading text-6xl md:text-8xl lg:text-9xl tracking-tighter"
             data-testid="hero-title"
           >
-            <span className="text-gold-500 text-glow">HEAVY</span>
+            <span className="gold-shimmer">HEAVY</span>
             <span className="text-white">HIVE</span>
           </motion.h1>
 
@@ -337,6 +350,19 @@ const HeroSection = () => {
           >
             STUDIOS
           </motion.p>
+
+          {/* Animated equalizer bars */}
+          <motion.div variants={fadeInUp} className="flex justify-center" aria-hidden="true">
+            <div className="eq-bars">
+              <span className="eq-bar" />
+              <span className="eq-bar" />
+              <span className="eq-bar" />
+              <span className="eq-bar" />
+              <span className="eq-bar" />
+              <span className="eq-bar" />
+              <span className="eq-bar" />
+            </div>
+          </motion.div>
 
           {/* Tagline */}
           <motion.p 
@@ -605,11 +631,11 @@ const ServicesSection = () => {
             <motion.div
               key={service.title}
               variants={fadeInUp}
-              className="hex-card group cursor-pointer"
+              className="hex-card card-shine group cursor-pointer"
               data-testid={`service-${service.title.toLowerCase().replace(/\s+/g, '-')}`}
             >
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-gold-500/10 group-hover:bg-gold-500 transition-colors">
+                <div className="p-3 bg-gold-500/10 group-hover:bg-gold-500 group-hover:scale-110 group-hover:-rotate-6 transition-all duration-300">
                   <service.icon className="w-6 h-6 text-gold-500 group-hover:text-black transition-colors" />
                 </div>
                 <div>
@@ -669,7 +695,7 @@ const PricingSection = () => {
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUp}
-            className="pricing-card p-8"
+            className="pricing-card card-shine p-8"
             data-testid="pricing-recording"
           >
             <div className="flex items-center gap-3 mb-6">
@@ -700,7 +726,7 @@ const PricingSection = () => {
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUp}
-            className="pricing-card p-8"
+            className="pricing-card card-shine p-8"
             data-testid="pricing-room"
           >
             <div className="flex items-center gap-3 mb-6">
@@ -774,7 +800,7 @@ const PricingSection = () => {
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUp}
-            className="pricing-card p-8"
+            className="pricing-card card-shine p-8"
             data-testid="pricing-beats"
           >
             <div className="flex items-center gap-3 mb-6">
@@ -968,10 +994,12 @@ const SubscriptionSection = () => {
             <motion.div
               key={index}
               variants={fadeInUp}
-              className={`relative p-8 border transition-all duration-300 hover:border-gold-500 ${
+              whileHover={{ y: -8 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              className={`relative p-8 border transition-colors duration-300 hover:border-gold-500 hover:shadow-[0_0_30px_rgba(212,175,55,0.15)] ${
                 sub.featured 
                   ? 'bg-gold-500/5 border-gold-500' 
-                  : 'bg-obsidian-100 border-gold-500/20'
+                  : 'bg-obsidian-100 border-gold-500/20 card-shine'
               }`}
               data-testid={`subscription-${sub.title.toLowerCase().replace(/\s+/g, '-')}`}
             >
@@ -1107,7 +1135,9 @@ const RecentWorkSection = () => {
               target="_blank"
               rel="noopener noreferrer"
               variants={fadeInUp}
-              className="group relative bg-obsidian border border-gold-500/20 hover:border-gold-500 transition-all duration-300 overflow-hidden cursor-pointer block"
+              whileHover={{ y: -6 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              className="group relative bg-obsidian border border-gold-500/20 hover:border-gold-500 hover:shadow-[0_0_30px_rgba(212,175,55,0.2)] transition-colors duration-300 overflow-hidden cursor-pointer block"
               data-testid={`recent-work-${index}`}
             >
               {/* Album Cover */}
@@ -1208,16 +1238,18 @@ const RosterSection = () => {
           whileInView="visible"
           viewport={{ once: true }}
           variants={staggerContainer}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="flex flex-wrap justify-center gap-6"
         >
           {rosterTeam.map((member, index) => (
             <motion.div
               key={index}
               variants={fadeInUp}
-              className={`group relative border transition-all duration-300 p-8 text-center bg-obsidian-100 ${
+              whileHover={{ y: -10 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              className={`group relative border transition-colors duration-300 p-8 text-center bg-obsidian-100 w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(25%-1.125rem)] hover:shadow-[0_0_30px_rgba(212,175,55,0.2)] ${
                 member.isOwner 
                   ? 'border-gold-500' 
-                  : 'border-gold-500/20 hover:border-gold-500'
+                  : 'border-gold-500/20 hover:border-gold-500 card-shine'
               }`}
               data-testid={`roster-member-${index}`}
             >
@@ -1231,7 +1263,7 @@ const RosterSection = () => {
               )}
 
               {/* Member Icon/Avatar */}
-              <div className={`w-24 h-24 mx-auto mb-6 border-2 flex items-center justify-center transition-all duration-300 ${
+              <div className={`w-24 h-24 mx-auto mb-6 border-2 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 ${
                 member.isOwner 
                   ? 'border-gold-500 bg-gold-500' 
                   : 'border-gold-500 group-hover:bg-gold-500'
@@ -1381,7 +1413,7 @@ const GallerySection = () => {
           {/* Navigation Arrows */}
           <button
             onClick={prevSlide}
-            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 hover:bg-gold-500 text-white hover:text-black transition-all border border-gold-500/30 hover:border-gold-500 z-10"
+            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 hover:bg-gold-500 text-white hover:text-black hover:scale-110 transition-all border border-gold-500/30 hover:border-gold-500 z-10"
             data-testid="carousel-prev"
             aria-label="Previous slide"
           >
@@ -1389,7 +1421,7 @@ const GallerySection = () => {
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 hover:bg-gold-500 text-white hover:text-black transition-all border border-gold-500/30 hover:border-gold-500 z-10"
+            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 hover:bg-gold-500 text-white hover:text-black hover:scale-110 transition-all border border-gold-500/30 hover:border-gold-500 z-10"
             data-testid="carousel-next"
             aria-label="Next slide"
           >
@@ -1587,6 +1619,7 @@ const Footer = () => {
 const Home = () => {
   return (
     <div className="min-h-screen bg-obsidian">
+      <ScrollProgress />
       <Navigation />
       <HeroSection />
       <PromoVideoSection />
