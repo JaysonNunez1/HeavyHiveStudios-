@@ -1,4 +1,6 @@
-from fastapi import FastAPI, APIRouter, Request, HTTPException
+import secrets
+
+from fastapi import FastAPI, APIRouter, Request, HTTPException, Header
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -26,6 +28,20 @@ db = client[os.environ['DB_NAME']]
 
 # Stripe API Key
 STRIPE_API_KEY = os.environ.get('STRIPE_API_KEY')
+
+# SECURITY: Origins allowed for CORS and checkout redirect URLs.
+# Set ALLOWED_ORIGINS (comma-separated) in the environment for production.
+ALLOWED_ORIGINS = [
+    origin.strip().rstrip('/')
+    for origin in os.environ.get(
+        'ALLOWED_ORIGINS',
+        os.environ.get('CORS_ORIGINS', 'https://heavy-hive-studios.vercel.app')
+    ).split(',')
+    if origin.strip() and origin.strip() != '*'
+] or ['https://heavy-hive-studios.vercel.app']
+
+# SECURITY: Token required for admin endpoints. If unset, admin endpoints are disabled.
+ADMIN_API_TOKEN = os.environ.get('ADMIN_API_TOKEN')
 
 # Create the main app without a prefix
 app = FastAPI()
@@ -86,15 +102,6 @@ SUBSCRIPTION_PLANS = {
 # ============================================
 # Pydantic Models
 # ============================================
-class StatusCheck(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    client_name: str
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
-class StatusCheckCreate(BaseModel):
-    client_name: str
-
 class SubscriptionCheckoutRequest(BaseModel):
     plan_id: str = Field(..., description="The subscription plan ID (artist-bundle, weekly-beats, studio-time)")
     origin_url: str = Field(..., description="The frontend origin URL for redirect")
@@ -128,22 +135,11 @@ class PaymentTransaction(BaseModel):
 async def root():
     return {"message": "Heavy Hive Studios API"}
 
-@api_router.post("/status", response_model=StatusCheck)
-async def create_status_check(input: StatusCheckCreate):
-    status_dict = input.model_dump()
-    status_obj = StatusCheck(**status_dict)
-    doc = status_obj.model_dump()
-    doc['timestamp'] = doc['timestamp'].isoformat()
-    _ = await db.status_checks.insert_one(doc)
-    return status_obj
-
-@api_router.get("/status", response_model=List[StatusCheck])
-async def get_status_checks():
-    status_checks = await db.status_checks.find({}, {"_id": 0}).to_list(1000)
-    for check in status_checks:
-        if isinstance(check['timestamp'], str):
-            check['timestamp'] = datetime.fromisoformat(check['timestamp'])
-    return status_checks
+# SECURITY: The old /status endpoints allowed anyone to write arbitrary records
+# to the database without authentication. Replaced with a read-only health check.
+@api_router.get("/health")
+async def health_check():
+    return {"status": "ok", "timestamp": datetime.now(timezone.utc).isoformat()}
 
 # ============================================
 # Subscription Plans Routes
@@ -182,9 +178,13 @@ async def create_subscription_checkout(request: Request, checkout_request: Subsc
         raise HTTPException(status_code=400, detail="Invalid subscription plan")
     
     plan = SUBSCRIPTION_PLANS[checkout_request.plan_id]
-    
-    # Build success and cancel URLs from frontend origin
+
+    # SECURITY: Only allow redirects back to origins we trust.
+    # Prevents attackers from crafting checkout sessions that redirect
+    # customers to a malicious site after payment.
     origin = checkout_request.origin_url.rstrip('/')
+    if origin not in ALLOWED_ORIGINS:
+        raise HTTPException(status_code=400, detail="Origin not allowed")
     success_url = f"{origin}/subscription/success?session_id={{CHECKOUT_SESSION_ID}}"
     cancel_url = f"{origin}/subscription/cancel"
     
@@ -350,24 +350,36 @@ async def stripe_webhook(request: Request):
         return {"received": True}
         
     except Exception as e:
+        # SECURITY: Log the details server-side but never echo internal error
+        # messages back to the caller.
         logger.error(f"Webhook error: {str(e)}")
-        return {"received": True, "error": str(e)}
+        return {"received": True}
 
 @api_router.get("/subscriptions/transactions")
-async def get_transactions():
-    """Get all payment transactions (admin endpoint)"""
+async def get_transactions(x_admin_token: Optional[str] = Header(None)):
+    """
+    Get all payment transactions (admin endpoint).
+
+    SECURITY: Requires the X-Admin-Token header to match ADMIN_API_TOKEN.
+    If ADMIN_API_TOKEN is not configured, this endpoint is disabled.
+    """
+    if not ADMIN_API_TOKEN or not x_admin_token or not secrets.compare_digest(x_admin_token, ADMIN_API_TOKEN):
+        raise HTTPException(status_code=403, detail="Forbidden")
     transactions = await db.payment_transactions.find({}, {"_id": 0}).to_list(1000)
     return {"transactions": transactions}
 
 # Include the router in the main app
 app.include_router(api_router)
 
+# SECURITY: Explicit origin allowlist instead of a wildcard, and only the
+# methods/headers the API actually uses. Never combine allow_credentials=True
+# with a "*" origin.
 app.add_middleware(
     CORSMiddleware,
-    allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_credentials=False,
+    allow_origins=ALLOWED_ORIGINS,
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type", "X-Admin-Token"],
 )
 
 @app.on_event("shutdown")

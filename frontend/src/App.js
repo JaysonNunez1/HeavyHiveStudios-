@@ -852,15 +852,14 @@ const PricingSection = () => {
   );
 };
 
-// Subscription Section with Stripe Checkout
+// Subscription Section - buttons open an email to get set up
+// (Stripe checkout is temporarily disabled until the Stripe account is fully configured)
 const SubscriptionSection = () => {
-  const [loadingPlan, setLoadingPlan] = useState(null);
-  
   const subscriptions = [
     {
       icon: Clock,
       title: "Studio Time",
-      planId: "price_1THxvbKPFpDMdL7yYCr12yYn",
+      email: "membersonlystudiosny@gmail.com",
       price: "$150",
       period: "/month",
       features: [
@@ -874,7 +873,7 @@ const SubscriptionSection = () => {
     {
       icon: Package,
       title: "Artist Bundle",
-      planId: "price_1TIw65KPFpDMdL7ykIqsnBmz",
+      email: "jayobeatz1@gmail.com",
       price: "$300",
       period: "/month",
       features: [
@@ -888,7 +887,7 @@ const SubscriptionSection = () => {
     {
       icon: Sparkles,
       title: "Weekly Beats",
-      planId: "price_1THxtKKPFpDMdL7ytrA4DwTS",
+      email: "jayobeatz1@gmail.com",
       price: "$150",
       period: "/month",
       features: [
@@ -902,7 +901,7 @@ const SubscriptionSection = () => {
     {
       icon: Headphones,
       title: "Mix & Master",
-      planId: null,
+      email: null,
       price: "Custom",
       period: "",
       features: [
@@ -916,44 +915,12 @@ const SubscriptionSection = () => {
     }
   ];
 
-  const handleSubscribe = async (planId) => {
-    if (!planId) return;
-    
-    setLoadingPlan(planId);
-    
-    try {
-      const originUrl = window.location.origin;
-      const backendUrl = process.env.REACT_APP_BACKEND_URL;
-      
-      const response = await fetch(`${backendUrl}/api/subscriptions/checkout`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          plan_id: planId,
-          origin_url: originUrl,
-        }),
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to create checkout session');
-      }
-      
-      const data = await response.json();
-      
-      // Redirect to Stripe Checkout
-      if (data.checkout_url) {
-        window.location.href = data.checkout_url;
-      } else {
-        throw new Error('No checkout URL received');
-      }
-    } catch (error) {
-      console.error('Checkout error:', error);
-      alert('Failed to start checkout. Please try again or contact us.');
-    } finally {
-      setLoadingPlan(null);
-    }
+  const buildSubscribeMailto = (sub) => {
+    const subject = encodeURIComponent(`${sub.title} Subscription (${sub.price}${sub.period}) - Heavy Hive Studios`);
+    const body = encodeURIComponent(
+      `Hi Heavy Hive Studios,\n\nI'd like to subscribe to the ${sub.title} plan (${sub.price}${sub.period}). Please send me the next steps.\n\nThanks!`
+    );
+    return `mailto:${sub.email}?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -1049,25 +1016,19 @@ const SubscriptionSection = () => {
                   Contact Us
                 </Button>
               ) : (
-                <Button 
-                  onClick={() => handleSubscribe(sub.planId)}
-                  disabled={loadingPlan === sub.planId}
-                  className={`w-full uppercase tracking-widest py-4 ${
-                    sub.featured 
-                      ? 'bg-gold-500 text-black hover:bg-gold-400' 
-                      : 'border border-gold-500 text-gold-500 hover:bg-gold-500 hover:text-black bg-transparent'
-                  }`}
-                  data-testid={`subscription-cta-${index}`}
-                >
-                  {loadingPlan === sub.planId ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Processing...
-                    </>
-                  ) : (
-                    'Subscribe Now'
-                  )}
-                </Button>
+                <a href={buildSubscribeMailto(sub)} className="block">
+                  <Button
+                    className={`w-full uppercase tracking-widest py-4 ${
+                      sub.featured
+                        ? 'bg-gold-500 text-black hover:bg-gold-400'
+                        : 'border border-gold-500 text-gold-500 hover:bg-gold-500 hover:text-black bg-transparent'
+                    }`}
+                    data-testid={`subscription-cta-${index}`}
+                  >
+                    <Mail className="w-4 h-4 mr-2" />
+                    Subscribe Now
+                  </Button>
+                </a>
               )}
             </motion.div>
           ))}
@@ -1081,7 +1042,7 @@ const SubscriptionSection = () => {
           variants={fadeInUp}
           className="text-center text-gray-500 text-sm mt-12"
         >
-          All subscriptions are billed monthly. Secure checkout powered by Stripe.
+          All subscriptions are billed monthly. Click Subscribe Now to email us and we'll get you set up.
         </motion.p>
       </div>
 

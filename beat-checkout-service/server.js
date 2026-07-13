@@ -27,13 +27,64 @@ const nodemailer = require('nodemailer');
 // Configuration & Initialization
 // ============================================
 
+const crypto = require('crypto');
+
 const app = express();
-app.use(cors({
-  origin: 'https://heavy-hive-studios.vercel.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
-}));
 const PORT = process.env.PORT || 3001;
+
+// SECURITY: Single explicit CORS allowlist. Never fall back to '*'.
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'https://heavy-hive-studios.vercel.app')
+  .split(',')
+  .map((origin) => origin.trim().replace(/\/$/, ''))
+  .filter((origin) => origin && origin !== '*');
+
+// SECURITY: Only these Stripe price IDs can be checked out. Prevents attackers
+// from starting checkouts for arbitrary prices/products on our account.
+const ALLOWED_PRICE_IDS = new Set(
+  (process.env.ALLOWED_PRICE_IDS || [
+    'price_1THxvbKPFpDMdL7yYCr12yYn', // Studio Time
+    'price_1TIw65KPFpDMdL7ykIqsnBmz', // Artist Bundle
+    'price_1THxtKKPFpDMdL7ytrA4DwTS', // Weekly Beats
+  ].join(','))
+    .split(',')
+    .map((id) => id.trim())
+    .filter(Boolean)
+);
+
+// SECURITY: Constant-time comparison for admin key checks.
+function safeCompare(a, b) {
+  const bufA = Buffer.from(String(a));
+  const bufB = Buffer.from(String(b));
+  if (bufA.length !== bufB.length) return false;
+  return crypto.timingSafeEqual(bufA, bufB);
+}
+
+// SECURITY: Minimal in-memory rate limiter (no extra dependencies).
+// Limits each IP to `max` requests per `windowMs`.
+const rateBuckets = new Map();
+function rateLimit(max, windowMs) {
+  return (req, res, next) => {
+    const key = `${req.ip}:${req.path}`;
+    const now = Date.now();
+    const bucket = rateBuckets.get(key);
+    if (!bucket || now - bucket.start > windowMs) {
+      rateBuckets.set(key, { start: now, count: 1 });
+      return next();
+    }
+    bucket.count += 1;
+    if (bucket.count > max) {
+      return res.status(429).json({ error: 'Too many requests. Please try again later.' });
+    }
+    next();
+  };
+}
+// Periodically clear stale rate-limit buckets so memory doesn't grow unbounded.
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, bucket] of rateBuckets) {
+    if (now - bucket.start > 15 * 60 * 1000) rateBuckets.delete(key);
+  }
+}, 5 * 60 * 1000).unref();
 
 // Initialize Stripe with your secret key
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
@@ -67,10 +118,11 @@ const emailTransporter = nodemailer.createTransport({
 // Security headers
 app.use(helmet());
 
-// CORS configuration
+// CORS configuration - strict allowlist, no credentials, minimal methods
 app.use(cors({
-  origin: process.env.ALLOWED_ORIGINS?.split(',') || '*',
+  origin: ALLOWED_ORIGINS,
   methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'X-Admin-Key'],
 }));
 
 // IMPORTANT: The Stripe webhook endpoint needs raw body for signature verification
@@ -359,27 +411,40 @@ app.post('/api/webhook/stripe', async (req, res) => {
  * This can be used by admins to regenerate download links
  * Protect this endpoint with authentication in production!
  */
-app.post('/api/admin/generate-download', async (req, res) => {
-  // TODO: Add authentication middleware for production
+app.post('/api/admin/generate-download', rateLimit(10, 60 * 1000), async (req, res) => {
+  // SECURITY: Requires the X-Admin-Key header to match ADMIN_API_KEY.
+  // If ADMIN_API_KEY is not configured, this endpoint is disabled entirely.
+  const adminKey = process.env.ADMIN_API_KEY;
+  if (!adminKey || !req.headers['x-admin-key'] || !safeCompare(req.headers['x-admin-key'], adminKey)) {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+
   const { email, beatFileKey, beatName } = req.body;
 
   if (!email || !beatFileKey || !beatName) {
-    return res.status(400).json({ 
-      error: 'Missing required fields: email, beatFileKey, beatName' 
+    return res.status(400).json({
+      error: 'Missing required fields: email, beatFileKey, beatName'
     });
+  }
+
+  // SECURITY: Only allow keys inside the beats/ prefix - blocks path traversal
+  // and stops the endpoint from being used to exfiltrate arbitrary S3 objects.
+  if (typeof beatFileKey !== 'string' || !beatFileKey.startsWith('beats/') || beatFileKey.includes('..')) {
+    return res.status(400).json({ error: 'Invalid beat file key' });
   }
 
   try {
     const downloadUrl = await generatePresignedDownloadUrl(beatFileKey);
     await sendDownloadEmail(email, beatName, downloadUrl);
-    
-    res.json({ 
-      success: true, 
-      message: `Download link sent to ${email}` 
+
+    res.json({
+      success: true,
+      message: `Download link sent to ${email}`
     });
   } catch (error) {
+    // SECURITY: Log details server-side, return a generic message to the caller.
     console.error('[ADMIN] Error generating download:', error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Failed to generate download link' });
   }
 });
 
@@ -395,12 +460,21 @@ app.use((err, req, res, next) => {
   });
 });
 // --- Subscription Checkout Route ---
-app.post('/api/subscriptions/checkout', async (req, res) => {
+app.post('/api/subscriptions/checkout', rateLimit(20, 60 * 1000), async (req, res) => {
   try {
     const { plan_id, origin_url } = req.body;
 
-    if (!plan_id) {
-      return res.status(400).json({ error: 'Missing plan_id' });
+    // SECURITY: Only accept known price IDs - never pass arbitrary
+    // client-supplied values to Stripe.
+    if (!plan_id || !ALLOWED_PRICE_IDS.has(plan_id)) {
+      return res.status(400).json({ error: 'Invalid subscription plan' });
+    }
+
+    // SECURITY: Only redirect back to origins we trust. Prevents attackers
+    // from sending customers to a malicious site after payment.
+    const origin = String(origin_url || '').replace(/\/$/, '');
+    if (!ALLOWED_ORIGINS.includes(origin)) {
+      return res.status(400).json({ error: 'Origin not allowed' });
     }
 
     // Tell Stripe to create a secure checkout page
@@ -408,13 +482,13 @@ app.post('/api/subscriptions/checkout', async (req, res) => {
       payment_method_types: ['card'],
       line_items: [
         {
-          price: plan_id, // Your frontend is sending the 'price_...' ID here!
+          price: plan_id,
           quantity: 1,
         },
       ],
       mode: 'subscription', // Use 'payment' if it's a one-time fee, 'subscription' for monthly
-      success_url: `${origin_url}?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin_url}?canceled=true`,
+      success_url: `${origin}/subscription/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/subscription/cancel`,
     });
 
     // Send the Stripe URL back to the frontend
