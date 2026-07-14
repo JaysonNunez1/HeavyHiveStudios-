@@ -859,7 +859,7 @@ const SubscriptionSection = () => {
     {
       icon: Clock,
       title: "Studio Time",
-      email: "membersonlystudiosny@gmail.com",
+      email: "jayobeatz1@gmail.com",
       price: "$150",
       period: "/month",
       features: [
@@ -1007,8 +1007,8 @@ const SubscriptionSection = () => {
 
               {/* CTA Button */}
               {sub.contactUs ? (
-                <Button 
-                  onClick={() => window.location.href = 'mailto:heavystudios@gmail.com'}
+                <Button
+                  onClick={() => window.location.href = 'mailto:jayobeatz1@gmail.com?subject=' + encodeURIComponent('Mix & Master Subscription Inquiry - Heavy Hive Studios')}
                   className="w-full border border-gold-500 text-gold-500 hover:bg-gold-500 hover:text-black uppercase tracking-widest py-4 bg-transparent"
                   data-testid={`subscription-contact-${index}`}
                 >
